@@ -1,0 +1,99 @@
+
+
+CREATE TABLE public.company
+(
+    buyername character varying(100) NOT NULL,
+    buyeremail character varying(50),
+    buyergst character varying(50),
+    buyercontact character varying(50),
+    deliveryaddress text,
+    sameasbuyeraddress boolean,
+    buyeraddress text,
+    CONSTRAINT company_pkey PRIMARY KEY (buyername)
+)
+
+CREATE TABLE public.itemmaster
+(
+    itemid VARCHAR(20) NOT NULL PRIMARY KEY, -- Unique identifier for the item, primary key
+    itemname VARCHAR(255) NOT NULL, -- Name of the item, required
+    productservice VARCHAR(50) NOT NULL, -- Indicates if it's a product or service, required
+    buysellboth VARCHAR(50) NOT NULL, -- Indicates whether the item is for buying, selling, or both, required
+    unitofmeasurement VARCHAR(50) NOT NULL, -- Unit of measurement, required
+    itemcategory VARCHAR(100) NOT NULL, -- Item category, required
+    currentstock INTEGER, -- Current stock level, optional
+    defaultprice NUMERIC(10, 2), -- Default price with precision up to 10 digits and 2 decimal places, optional
+    hsncode VARCHAR(100), -- HSN code, optional
+    tax VARCHAR(100), -- Tax category or rate, optional
+    minimumstocklevel INTEGER, -- Minimum stock level, optional
+    maximumstocklevel INTEGER, -- Maximum stock level, optional
+    drawingnumber VARCHAR(100), -- Drawing number, optional
+    serialnumber VARCHAR(100), -- Serial number, optional
+    counterpartycode VARCHAR(100) -- Code for the counterparty (vendor or supplier), optional
+);
+
+
+CREATE TABLE sales (
+    enquiry_id VARCHAR(20) NOT NULL PRIMARY KEY,
+    supplier_details JSONB,
+    buyer_details JSONB,
+    delivery_location JSONB,
+    place_of_supply JSONB,
+    primary_document_details JSONB,
+    items JSONB,
+    email_recipients TEXT,
+    total_before_tax NUMERIC,
+    total_tax NUMERIC,
+    total_after_tax NUMERIC,
+    quotation_id VARCHAR(20),
+    quotation_date TIMESTAMP,
+    order_id VARCHAR(20),
+    order_date TIMESTAMP,
+    PO_id VARCHAR(20),
+    PO_date TIMESTAMP,
+    deal_owner VARCHAR(20),
+    deal_status VARCHAR(20),
+    SqCreated BOOLEAN,
+    OcCreated BOOLEAN,
+    created_by VARCHAR(20),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  username VARCHAR(100) UNIQUE NOT NULL,
+  password VARCHAR(255) NOT NULL,
+	usertype VARCHAR(255) NOT NULL,
+	temporarypassword VARCHAR(255) NOT NULL,
+	name VARCHAR(255) NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+	
+);
+INSERT INTO public.users(
+	id, username, password, usertype, temporarypassword, name, created_at)
+	VALUES ('1', 'user@example.com', 'password123','user', 'abcd', 'Apoorva', '2/08/2024');
+
+
+CREATE TABLE serial_numbers (
+    id SERIAL PRIMARY KEY,
+    form_type VARCHAR(50) NOT NULL,  -- Could be 'ENQUIRY', 'QUOTATION', etc.
+    last_number INT NOT NULL DEFAULT 0
+);
+
+INSERT INTO serial_numbers (
+    id, form_type, last_number)
+    values (1, 'SE', 00000);
+
+INSERT INTO serial_numbers (
+    id, form_type, last_number)
+    values (2, 'QTN', 00000);
+
+INSERT INTO serial_numbers (
+    id, form_type, last_number)
+    values (3, 'OC', 00000);
+
+INSERT INTO serial_numbers (
+    id, form_type, last_number)
+    values (4, 'SKU', 00000);
+
+
