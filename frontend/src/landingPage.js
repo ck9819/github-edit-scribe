@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Button, Modal, Layout, Image } from 'antd';
+import { Button, Modal, Layout, Image, Row,Col } from 'antd';
 import Login from './login';
-import landingPageImg from './static/assets/background.jpeg';
-import './App.css';  // Import your CSS file here
+import './login.css';  // Import your CSS file here
 
 const { Header, Content, Footer } = Layout;
 
@@ -37,7 +36,10 @@ const App = () => {
         <Login onClose={handleCancel} />
       </Modal>
       <Footer className='footer'>
-        YES PEE © 2024
+        <Row gutter={16}>
+            <Col span={12}>YES PEE © 2024</Col>
+            <Col span={12}>Copyright @ Lumin AI systems</Col>
+        </Row>
       </Footer>
     </div>
   );
