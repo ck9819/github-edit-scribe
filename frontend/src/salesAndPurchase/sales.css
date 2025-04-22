@@ -1,0 +1,30 @@
+/* Tabs Styling */
+.tabs .ant-tabs-tab {
+    font-size: 16px;
+    padding: 12px 24px;
+    /* position: fixed; */
+  }
+  
+  .tabs .ant-tabs-tab-active {
+    font-weight: bold;
+    color: #1890ff;
+  }
+  
+  .tabs .ant-tabs-ink-bar {
+    background-color: #1890ff;
+  }
+  
+  /* Customize Ant Design Tabs */
+  .ant-tabs-card .ant-tabs-tab {
+    background: #f0f2f5;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    margin-right: 8px;
+  }
+  
+  .ant-tabs-card .ant-tabs-tab-active {
+    background: #ffffff;
+    border-color: #1890ff;
+  }
+
+  
