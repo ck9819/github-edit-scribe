@@ -16,7 +16,8 @@
     "react-router-dom": "^6.25.1",
     "react-scripts": "^3.0.1",
     "redux": "^5.0.1",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "@vitejs/plugin-react": "2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
