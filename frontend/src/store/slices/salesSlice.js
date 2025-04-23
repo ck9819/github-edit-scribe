@@ -1,3 +1,4 @@
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -11,7 +12,7 @@ export const fetchSalesEnquiry = createAsyncThunk('sales/fetchSalesEnquiry', asy
   }
 });
 
-export const fetchAllSalesEnquiry = createAsyncThunk('sales/fetchAllSalesEnquiry', async (thunkAPI) => {
+export const fetchAllSalesEnquiry = createAsyncThunk('sales/fetchAllSalesEnquiry', async (_, thunkAPI) => {
   try {
     const response = await axios.get(`http://localhost:5000/getallsales`);
     return response.data;
@@ -24,6 +25,7 @@ const salesSlice = createSlice({
   name: 'sales',
   initialState: {
     enquiry: [],
+    allEnquiries: [],
     loading: false,
     error: null,
   },
@@ -39,6 +41,18 @@ const salesSlice = createSlice({
         state.loading = false;
       })
       .addCase(fetchSalesEnquiry.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchAllSalesEnquiry.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllSalesEnquiry.fulfilled, (state, action) => {
+        state.allEnquiries = action.payload;
+        state.loading = false;
+      })
+      .addCase(fetchAllSalesEnquiry.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

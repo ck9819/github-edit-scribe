@@ -1,17 +1,16 @@
+
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchAllItems, getItemId} from '../api/index'
+import { fetchAllItems, getItemId } from '../api/index';
 
 export const fetchItems = createAsyncThunk('fetchItems', async () => {
   const response = await fetchAllItems();
-
   return response.data;
 });
 
 export const fetchItemId = createAsyncThunk('/fetchItemsId', async () => {
-    const response = await getItemId();
-    return response.data;
-  });
-
+  const response = await getItemId();
+  return response.data;
+});
 
 const itemSlice = createSlice({
   name: 'items',
@@ -33,6 +32,18 @@ const itemSlice = createSlice({
         state.myitems = action.payload;
       })
       .addCase(fetchItems.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
+      })
+      .addCase(fetchItemId.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchItemId.fulfilled, (state, action) => {
+        state.loading = false;
+        state.itemid = action.payload;
+      })
+      .addCase(fetchItemId.rejected, (state, action) => {
         state.loading = false;
         state.error = action.error.message;
       });

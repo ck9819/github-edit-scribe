@@ -5,27 +5,23 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Layout } from 'antd';
 import LandingPage from './login_ui/landingPage';
 import UserDashboard from './dashboard/homepage';
-//import QuotationForm from './quotationForm';
+import SalesTabs from './salesAndPurchase/tabs';
 
 const { Content } = Layout;
 
 const App = () => {
   return (
-      <Layout style={{ minHeight: '100vh' }}>
-        <Content style={{ padding: '0px', marginTop: 0 }}>
-          <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
-            <Routes>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/profile/*" element={<UserDashboard />} />
-               {/*<Route path="/quotation" element={<QuotationForm />} />
-              <Route path="/enquiry" element={<EnquiryForm />} />
-              <Route path="/requestForquotation" element={<ReqsuestQuotationForm />} />
-              <Route path="/orderConfirmation" element={<OrderConfirmation />} />
-              <Route path="/summary" element={<Summary />} /> */}
-            </Routes>
-          </div>
-        </Content>
-      </Layout>
+    <Layout style={{ minHeight: '100vh' }}>
+      <Content style={{ padding: '0px', marginTop: 0 }}>
+        <div style={{ background: '#fff', padding: 24, minHeight: 380 }}>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/profile/*" element={<UserDashboard />} />
+            <Route path="/sales/*" element={<SalesTabs />} />
+          </Routes>
+        </div>
+      </Content>
+    </Layout>
   );
 };
 
