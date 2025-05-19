@@ -8,15 +8,14 @@
     "frontend"
   ],
   "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "build:dev": "vite build --mode development",
-  "lint": "eslint .",
-  "preview": "vite preview"
+    "dev": "vite",
+    "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "lint": "eslint .",
+    "preview": "vite preview"
   },
   "author": "",
   "license": "ISC",
-  "devDependencies": {},
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -34,5 +33,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "^4.2.1"
   }
 }
