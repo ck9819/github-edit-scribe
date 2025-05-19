@@ -1,30 +1,56 @@
-/* Tabs Styling */
-.tabs .ant-tabs-tab {
-    font-size: 16px;
-    padding: 12px 24px;
-    /* position: fixed; */
-  }
-  
-  .tabs .ant-tabs-tab-active {
-    font-weight: bold;
-    color: #1890ff;
-  }
-  
-  .tabs .ant-tabs-ink-bar {
-    background-color: #1890ff;
-  }
-  
-  /* Customize Ant Design Tabs */
-  .ant-tabs-card .ant-tabs-tab {
-    background: #f0f2f5;
-    border: 1px solid #d9d9d9;
-    border-radius: 4px;
-    margin-right: 8px;
-  }
-  
-  .ant-tabs-card .ant-tabs-tab-active {
-    background: #ffffff;
-    border-color: #1890ff;
-  }
 
-  
+/* Tabs Styling */
+.sales-layout {
+  width: 100%;
+  padding-top: 20px;
+}
+
+.sales-content {
+  padding: 0 20px;
+}
+
+.sales-tabs {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.sales-tabs .ant-tabs-tab {
+  font-size: 16px;
+  padding: 12px 24px;
+}
+
+.sales-tabs .ant-tabs-tab-active {
+  font-weight: bold;
+  color: #1890ff;
+}
+
+.sales-tabs .ant-tabs-ink-bar {
+  background-color: #1890ff;
+}
+
+/* Customize Ant Design Tabs */
+.ant-tabs-card .ant-tabs-tab {
+  background: #f0f2f5;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px 4px 0 0;
+  margin-right: 8px;
+}
+
+.ant-tabs-card .ant-tabs-tab-active {
+  background: #ffffff;
+  border-bottom-color: #ffffff;
+}
+
+/* Table styling */
+.sales-table {
+  width: 100%;
+  overflow-x: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .sales-tabs .ant-tabs-tab {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}

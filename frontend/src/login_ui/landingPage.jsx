@@ -1,5 +1,6 @@
+
 import React, { useState } from 'react';
-import { Button, Modal, Layout, Image, Row,Col } from 'antd';
+import { Button, Modal, Layout, Image, Row, Col } from 'antd';
 import Login from './login';
 import './login.css';  // Import your CSS file here
 
@@ -18,18 +19,20 @@ const App = () => {
 
   return (
     <div id="home">
-      <Header>
-        <div className="header-title">YESPEE</div>
-        <Button className='login-button'   onClick={showModal}>
-          Login
-        </Button>
+      <Header className="responsive-header">
+        <div className="header-content">
+          <div className="header-title">YESPEE</div>
+          <Button className='login-button' onClick={showModal}>
+            Login
+          </Button>
+        </div>
       </Header>
       <Content>
         <Image className='image' />
       </Content>
       <Modal
         title="Login"
-        visible={isModalVisible}
+        open={isModalVisible}
         footer={null}
         onCancel={handleCancel}
       >
@@ -37,8 +40,8 @@ const App = () => {
       </Modal>
       <Footer className='footer'>
         <Row gutter={16}>
-            <Col span={12}>YES PEE © 2024</Col>
-            <Col span={12}>Copyright @ Lumin AI systems</Col>
+          <Col xs={24} sm={12}>YES PEE © 2024</Col>
+          <Col xs={24} sm={12} className="copyright-text">Copyright @ Lumin AI systems</Col>
         </Row>
       </Footer>
     </div>
