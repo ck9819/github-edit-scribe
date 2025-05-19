@@ -1,6 +1,7 @@
+
 import React, { useState } from 'react'
-import { Layout, Menu, Button,Row, Col  } from 'antd'
-import { useNavigate, Routes, Route} from 'react-router-dom'
+import { Layout, Menu, Button, Row, Col } from 'antd'
+import { useNavigate, Routes, Route } from 'react-router-dom'
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -10,9 +11,6 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons'
 import SalesTabs from '../salesAndPurchase/tabs'
-// import Settings from './Settings';
-// import User from './User';
-// import Logout from './Logout';
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -29,19 +27,23 @@ const UserDashboard = () => {
   }
 
   return (
-    <Layout style={{ display: 'flex', height: '100vh', width: '100vw' }}>
-      <Header>
+    <Layout className="dashboard-layout">
+      <Header className="dashboard-header">
         <div className="header-title">YESPEE</div>
       </Header>
-      <Layout>
-        <Sider trigger={null} collapsible collapsed={collapsed}>
-          <div className="demo-logo-vertical" />
+      <Layout className="main-content-layout">
+        <Sider 
+          trigger={null} 
+          collapsible 
+          collapsed={collapsed}
+          breakpoint="lg"
+          collapsedWidth={80}
+          className="dashboard-sider"
+        >
           <Button
             type="primary"
             onClick={toggleCollapsed}
-            style={{
-              marginBottom: 16,
-            }}
+            className="collapse-button"
           >
             {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
           </Button>
@@ -49,7 +51,6 @@ const UserDashboard = () => {
             theme="dark"
             mode="inline"
             defaultSelectedKeys={['/profile/sales-purchase']}
-            inlineCollapsed={collapsed}
             onClick={handleMenuClick}
             items={[
               {
@@ -76,7 +77,7 @@ const UserDashboard = () => {
           />
         </Sider>
 
-        <Content style={{ padding: '0 50px', marginTop: 64 }}>
+        <Content className="dashboard-content">
           <Routes>
             <Route path="/sales-purchase/*" element={<SalesTabs />} />
             {/* <Route path="settings" element={<Settings />} />
@@ -86,10 +87,10 @@ const UserDashboard = () => {
         </Content>
       </Layout>
 
-      <Footer className="footer">
+      <Footer className="dashboard-footer">
         <Row gutter={16}>
-          <Col span={12}>YES PEE © 2024</Col>
-          <Col span={12}>Copyright @ Lumin AI systems</Col>
+          <Col xs={24} sm={12}>YES PEE © 2024</Col>
+          <Col xs={24} sm={12} className="footer-copyright">Copyright @ Lumin AI systems</Col>
         </Row>
       </Footer>
     </Layout>
