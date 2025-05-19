@@ -35,7 +35,7 @@
     ]
   },
   "dependencies": {
-    "@vitejs/plugin-react": "^4.2.1",
+    "@vitejs/plugin-react": "^4.4.1",
     "lovable-tagger": "^1.1.8"
   }
 }
