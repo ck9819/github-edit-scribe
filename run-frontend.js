@@ -26,17 +26,18 @@ if (!fs.existsSync(path.join(frontendPath, 'node_modules'))) {
 
 function startDevServer() {
   console.log('Starting development server...');
-  // Use npx to ensure we're using the local vite installation
-  const child = spawn('npx', ['vite'], { stdio: 'inherit', shell: true });
+  
+  // Execute npm run dev instead of directly calling vite
+  const child = spawn('npm', ['run', 'dev'], { stdio: 'inherit', shell: true });
 
   child.on('error', (error) => {
-    console.error(`Error executing vite: ${error}`);
+    console.error(`Error executing npm run dev: ${error}`);
     process.exit(1);
   });
 
   child.on('close', (code) => {
     if (code !== 0) {
-      console.log(`Vite process exited with code ${code}`);
+      console.log(`npm run dev process exited with code ${code}`);
       process.exit(code);
     }
   });
