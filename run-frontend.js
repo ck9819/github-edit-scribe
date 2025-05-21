@@ -5,6 +5,7 @@ const fs = require('fs');
 
 // Change directory to frontend
 const frontendPath = path.join(__dirname, 'frontend');
+console.log(`Working directory: ${frontendPath}`);
 process.chdir(frontendPath);
 
 // Function to ensure file has write permissions
@@ -30,93 +31,63 @@ const jsonFiles = [
 
 jsonFiles.forEach(ensureWritePermissions);
 
-// Check if node_modules exists in the frontend directory
-if (!fs.existsSync(path.join(frontendPath, 'node_modules'))) {
-  console.log('Installing frontend dependencies...');
-  // Run npm install first if node_modules doesn't exist
-  const install = spawn('npm', ['install'], { stdio: 'inherit', shell: true });
-  
-  install.on('close', (code) => {
-    if (code !== 0) {
-      console.error(`npm install failed with code ${code}`);
-      process.exit(code);
-    }
-    startDevServer();
-  });
-} else {
-  startDevServer();
-}
+console.log('Starting installation process...');
 
-function startDevServer() {
-  console.log('Starting development server...');
-  
-  // Try direct access to vite in node_modules/.bin
-  const vitePath = path.join(frontendPath, 'node_modules', '.bin', 'vite');
-  
-  if (fs.existsSync(vitePath)) {
-    console.log(`Found vite at: ${vitePath}`);
-    const child = spawn(vitePath, [], { stdio: 'inherit', shell: true });
-    
-    child.on('error', (error) => {
-      fallbackToNpx(error);
-    });
-    
-    child.on('close', (code) => {
-      if (code !== 0) {
-        console.log(`Vite process exited with code ${code}`);
-        process.exit(code);
-      }
-    });
-  } else {
-    console.log('Vite executable not found in node_modules/.bin, trying alternatives...');
-    tryAlternativeApproaches();
+// Always ensure vite is installed locally to prevent "not found" errors
+const installProcess = spawn('npm', ['install', '--save-dev', 'vite'], { 
+  stdio: 'inherit', 
+  shell: true 
+});
+
+installProcess.on('close', (code) => {
+  if (code !== 0) {
+    console.warn(`Warning: npm install for vite exited with code ${code}`);
   }
-}
+  
+  console.log('Starting the development server...');
+  runDevServer();
+});
 
-function tryAlternativeApproaches() {
-  // Try npm run dev
-  console.log('Trying npm run dev...');
-  const npmChild = spawn('npm', ['run', 'dev'], { stdio: 'inherit', shell: true });
-  
-  npmChild.on('error', (error) => {
-    console.error(`Error executing npm run dev: ${error}`);
-    fallbackToNpx(error);
+function runDevServer() {
+  // Directly use npm run dev which should use the local vite
+  const devProcess = spawn('npm', ['run', 'dev'], { 
+    stdio: 'inherit', 
+    shell: true 
   });
-  
-  npmChild.on('close', (code) => {
+
+  devProcess.on('error', (error) => {
+    console.error(`Error when running npm run dev: ${error.message}`);
+    tryFallbackMethod();
+  });
+
+  devProcess.on('close', (code) => {
     if (code !== 0) {
-      console.log(`npm run dev process exited with code ${code}`);
-      fallbackToNpx(new Error('npm run dev failed'));
+      console.warn(`npm run dev exited with code ${code}, trying fallback...`);
+      tryFallbackMethod();
     }
   });
 }
 
-function fallbackToNpx(error) {
-  console.error(`Error starting development server: ${error}`);
-  console.log('Falling back to npx vite...');
+function tryFallbackMethod() {
+  console.log('Trying direct npx vite execution...');
   
-  // Try installing vite globally if it doesn't exist
-  console.log('Installing vite locally first...');
-  const installVite = spawn('npm', ['install', '--save-dev', 'vite'], { stdio: 'inherit', shell: true });
+  // Try using npx which should find the local vite
+  const npxProcess = spawn('npx', ['vite'], { 
+    stdio: 'inherit', 
+    shell: true 
+  });
   
-  installVite.on('close', (code) => {
+  npxProcess.on('error', (error) => {
+    console.error(`Error when running npx vite: ${error.message}`);
+    console.error('All methods to start vite have failed.');
+    process.exit(1);
+  });
+  
+  npxProcess.on('close', (code) => {
     if (code !== 0) {
-      console.error(`Failed to install vite locally: ${code}`);
-    }
-    
-    // Fall back to npx vite as a last resort
-    const npxChild = spawn('npx', ['vite'], { stdio: 'inherit', shell: true });
-    
-    npxChild.on('error', (npxError) => {
-      console.error(`Error with fallback method: ${npxError}`);
+      console.error(`npx vite exited with code ${code}`);
+      console.error('All methods to start vite have failed.');
       process.exit(1);
-    });
-    
-    npxChild.on('close', (code) => {
-      if (code !== 0) {
-        console.log(`npx vite process exited with code ${code}`);
-        process.exit(code);
-      }
-    });
+    }
   });
 }

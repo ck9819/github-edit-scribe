@@ -23,7 +23,7 @@ export default defineConfig(async ({ mode }) => {
     ].filter(Boolean),
     esbuild: {
       loader: 'jsx', // treat .js files as JSX
-      include: /src\/.*\.js$/, // only apply to your source files
+      include: /src\/.*\.jsx?$/, // apply to your source files
     },
     server: {
       host: "::",
