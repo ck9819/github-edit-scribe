@@ -27,17 +27,33 @@ if (!fs.existsSync(path.join(frontendPath, 'node_modules'))) {
 function startDevServer() {
   console.log('Starting development server...');
   
-  // Execute npm run dev instead of directly calling vite
-  const child = spawn('npm', ['run', 'dev'], { stdio: 'inherit', shell: true });
+  // Use the path to the local vite executable in node_modules/.bin
+  const vitePath = path.join(frontendPath, 'node_modules', '.bin', 'vite');
+  const child = spawn(vitePath, [], { stdio: 'inherit', shell: true });
 
   child.on('error', (error) => {
-    console.error(`Error executing npm run dev: ${error}`);
-    process.exit(1);
+    console.error(`Error executing vite: ${error}`);
+    console.error('Falling back to npx vite...');
+    
+    // Fall back to npx as a second attempt
+    const npxChild = spawn('npx', ['vite'], { stdio: 'inherit', shell: true });
+    
+    npxChild.on('error', (npxError) => {
+      console.error(`Error with fallback method: ${npxError}`);
+      process.exit(1);
+    });
+    
+    npxChild.on('close', (code) => {
+      if (code !== 0) {
+        console.log(`npx vite process exited with code ${code}`);
+        process.exit(code);
+      }
+    });
   });
 
   child.on('close', (code) => {
     if (code !== 0) {
-      console.log(`npm run dev process exited with code ${code}`);
+      console.log(`Vite process exited with code ${code}`);
       process.exit(code);
     }
   });
