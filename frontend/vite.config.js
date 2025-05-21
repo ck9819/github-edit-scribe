@@ -8,8 +8,12 @@ export default defineConfig(async ({ mode }) => {
   // Conditionally import componentTagger only in development mode
   let componentTagger;
   if (mode === 'development') {
-    const lovableTagger = await import('lovable-tagger');
-    componentTagger = lovableTagger.componentTagger;
+    try {
+      const lovableTagger = await import('lovable-tagger');
+      componentTagger = lovableTagger.componentTagger;
+    } catch (error) {
+      console.warn('Warning: Could not import lovable-tagger, proceeding without it');
+    }
   }
 
   return {
