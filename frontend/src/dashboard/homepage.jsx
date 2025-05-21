@@ -11,6 +11,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons'
 import SalesTabs from '../salesAndPurchase/tabs'
+import { supplierDetails } from '../constants'
 
 const { Header, Content, Footer, Sider } = Layout
 
@@ -29,7 +30,7 @@ const UserDashboard = () => {
   return (
     <Layout className="dashboard-layout">
       <Header className="dashboard-header">
-        <div className="header-title">YESPEE</div>
+        <div className="header-title">{supplierDetails.name}</div>
       </Header>
       <Layout className="main-content-layout">
         <Sider 
@@ -89,7 +90,7 @@ const UserDashboard = () => {
 
       <Footer className="dashboard-footer">
         <Row gutter={16}>
-          <Col xs={24} sm={12}>YES PEE © 2024</Col>
+          <Col xs={24} sm={12}>{supplierDetails.name} © 2024</Col>
           <Col xs={24} sm={12} className="footer-copyright">Copyright @ Lumin AI systems</Col>
         </Row>
       </Footer>

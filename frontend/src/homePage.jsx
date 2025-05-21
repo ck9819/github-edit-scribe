@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Layout, Menu, Button } from 'antd';
 import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
@@ -10,6 +11,7 @@ import {
   LogoutOutlined,
 } from '@ant-design/icons';
 import SalesPurchase from './sales&Purchase';
+import { supplierDetails } from './constants';
 // import Settings from './Settings';
 // import User from './User';
 // import Logout from './Logout';
@@ -32,7 +34,7 @@ const UserDashboard = () => {
   return (
     <Layout style={{ display: 'flex',height: '100vh', width: '100vw'}}>
       <Header>
-          <div className="header-title">YESPEE</div>
+          <div className="header-title">{supplierDetails.name}</div>
       </Header>
       <Layout>
         <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -88,7 +90,7 @@ const UserDashboard = () => {
       </Layout>
 
       <Footer className='footer'>
-        YES PEE © 2024
+        {supplierDetails.name} © 2024
       </Footer>
       
     </Layout>
