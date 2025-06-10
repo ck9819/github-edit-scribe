@@ -31,17 +31,19 @@ const jsonFiles = [
 
 jsonFiles.forEach(ensureWritePermissions);
 
-console.log('Starting installation process...');
+console.log('Installing frontend dependencies...');
 
-// Always ensure vite is installed locally to prevent "not found" errors
-const installProcess = spawn('npm', ['install', '--save-dev', 'vite'], { 
+// Install dependencies in the frontend directory
+const installProcess = spawn('npm', ['install'], { 
   stdio: 'inherit', 
-  shell: true 
+  shell: true,
+  cwd: frontendPath
 });
 
 installProcess.on('close', (code) => {
   if (code !== 0) {
-    console.warn(`Warning: npm install for vite exited with code ${code}`);
+    console.error(`npm install exited with code ${code}`);
+    process.exit(1);
   }
   
   console.log('Starting the development server...');
@@ -49,44 +51,21 @@ installProcess.on('close', (code) => {
 });
 
 function runDevServer() {
-  // Directly use npm run dev which should use the local vite
+  // Run npm run dev from the frontend directory
   const devProcess = spawn('npm', ['run', 'dev'], { 
     stdio: 'inherit', 
-    shell: true 
+    shell: true,
+    cwd: frontendPath
   });
 
   devProcess.on('error', (error) => {
     console.error(`Error when running npm run dev: ${error.message}`);
-    tryFallbackMethod();
+    process.exit(1);
   });
 
   devProcess.on('close', (code) => {
     if (code !== 0) {
-      console.warn(`npm run dev exited with code ${code}, trying fallback...`);
-      tryFallbackMethod();
-    }
-  });
-}
-
-function tryFallbackMethod() {
-  console.log('Trying direct npx vite execution...');
-  
-  // Try using npx which should find the local vite
-  const npxProcess = spawn('npx', ['vite'], { 
-    stdio: 'inherit', 
-    shell: true 
-  });
-  
-  npxProcess.on('error', (error) => {
-    console.error(`Error when running npx vite: ${error.message}`);
-    console.error('All methods to start vite have failed.');
-    process.exit(1);
-  });
-  
-  npxProcess.on('close', (code) => {
-    if (code !== 0) {
-      console.error(`npx vite exited with code ${code}`);
-      console.error('All methods to start vite have failed.');
+      console.error(`npm run dev exited with code ${code}`);
       process.exit(1);
     }
   });
