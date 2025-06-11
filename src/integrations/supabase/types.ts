@@ -9,13 +9,240 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      company: {
+        Row: {
+          buyeraddress: string | null
+          buyercontact: string | null
+          buyeremail: string | null
+          buyergst: string | null
+          buyername: string
+          created_at: string | null
+          deliveryaddress: string | null
+          id: string
+          sameasbuyeraddress: boolean | null
+        }
+        Insert: {
+          buyeraddress?: string | null
+          buyercontact?: string | null
+          buyeremail?: string | null
+          buyergst?: string | null
+          buyername: string
+          created_at?: string | null
+          deliveryaddress?: string | null
+          id?: string
+          sameasbuyeraddress?: boolean | null
+        }
+        Update: {
+          buyeraddress?: string | null
+          buyercontact?: string | null
+          buyeremail?: string | null
+          buyergst?: string | null
+          buyername?: string
+          created_at?: string | null
+          deliveryaddress?: string | null
+          id?: string
+          sameasbuyeraddress?: boolean | null
+        }
+        Relationships: []
+      }
+      itemmaster: {
+        Row: {
+          buysellboth: string
+          counterpartycode: string | null
+          created_at: string | null
+          currentstock: number | null
+          defaultprice: number | null
+          drawingnumber: string | null
+          hsncode: string | null
+          id: string
+          itemcategory: string
+          itemid: string
+          itemname: string
+          maximumstocklevel: number | null
+          minimumstocklevel: number | null
+          productservice: string
+          serialnumber: string | null
+          tax: string | null
+          unitofmeasurement: string
+        }
+        Insert: {
+          buysellboth: string
+          counterpartycode?: string | null
+          created_at?: string | null
+          currentstock?: number | null
+          defaultprice?: number | null
+          drawingnumber?: string | null
+          hsncode?: string | null
+          id?: string
+          itemcategory: string
+          itemid: string
+          itemname: string
+          maximumstocklevel?: number | null
+          minimumstocklevel?: number | null
+          productservice: string
+          serialnumber?: string | null
+          tax?: string | null
+          unitofmeasurement: string
+        }
+        Update: {
+          buysellboth?: string
+          counterpartycode?: string | null
+          created_at?: string | null
+          currentstock?: number | null
+          defaultprice?: number | null
+          drawingnumber?: string | null
+          hsncode?: string | null
+          id?: string
+          itemcategory?: string
+          itemid?: string
+          itemname?: string
+          maximumstocklevel?: number | null
+          minimumstocklevel?: number | null
+          productservice?: string
+          serialnumber?: string | null
+          tax?: string | null
+          unitofmeasurement?: string
+        }
+        Relationships: []
+      }
+      sales: {
+        Row: {
+          buyer_details: Json | null
+          created_at: string | null
+          created_by: string | null
+          deal_owner: string | null
+          deal_status: string | null
+          delivery_location: Json | null
+          email_recipients: string | null
+          enquiry_id: string
+          id: string
+          items: Json | null
+          occreated: boolean | null
+          order_date: string | null
+          order_id: string | null
+          place_of_supply: Json | null
+          po_date: string | null
+          po_id: string | null
+          primary_document_details: Json | null
+          quotation_date: string | null
+          quotation_id: string | null
+          sqcreated: boolean | null
+          supplier_details: Json | null
+          total_after_tax: number | null
+          total_before_tax: number | null
+          total_tax: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          buyer_details?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          deal_owner?: string | null
+          deal_status?: string | null
+          delivery_location?: Json | null
+          email_recipients?: string | null
+          enquiry_id: string
+          id?: string
+          items?: Json | null
+          occreated?: boolean | null
+          order_date?: string | null
+          order_id?: string | null
+          place_of_supply?: Json | null
+          po_date?: string | null
+          po_id?: string | null
+          primary_document_details?: Json | null
+          quotation_date?: string | null
+          quotation_id?: string | null
+          sqcreated?: boolean | null
+          supplier_details?: Json | null
+          total_after_tax?: number | null
+          total_before_tax?: number | null
+          total_tax?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          buyer_details?: Json | null
+          created_at?: string | null
+          created_by?: string | null
+          deal_owner?: string | null
+          deal_status?: string | null
+          delivery_location?: Json | null
+          email_recipients?: string | null
+          enquiry_id?: string
+          id?: string
+          items?: Json | null
+          occreated?: boolean | null
+          order_date?: string | null
+          order_id?: string | null
+          place_of_supply?: Json | null
+          po_date?: string | null
+          po_id?: string | null
+          primary_document_details?: Json | null
+          quotation_date?: string | null
+          quotation_id?: string | null
+          sqcreated?: boolean | null
+          supplier_details?: Json | null
+          total_after_tax?: number | null
+          total_before_tax?: number | null
+          total_tax?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      serial_numbers: {
+        Row: {
+          created_at: string | null
+          form_type: string
+          id: string
+          last_number: number
+        }
+        Insert: {
+          created_at?: string | null
+          form_type: string
+          id?: string
+          last_number?: number
+        }
+        Update: {
+          created_at?: string | null
+          form_type?: string
+          id?: string
+          last_number?: number
+        }
+        Relationships: []
+      }
+      user_profiles: {
+        Row: {
+          created_at: string | null
+          id: string
+          name: string | null
+          username: string | null
+          usertype: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          id: string
+          name?: string | null
+          username?: string | null
+          usertype?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          name?: string | null
+          username?: string | null
+          usertype?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_next_serial_number: {
+        Args: { form_type_param: string }
+        Returns: number
+      }
     }
     Enums: {
       [_ in never]: never
