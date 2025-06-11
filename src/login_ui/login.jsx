@@ -1,10 +1,10 @@
 
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import { useAuth } from '../hooks/useAuth';
 import { validateEmail } from '../utils';
 import { Form, Input, Button, Select, message, Tabs } from 'antd';
-import { UserOutlined, LockOutlined, TeamOutlined } from '@ant-design/icons';
+import { UserOutlined, LockOutlined, TeamOutlined, MailOutlined } from '@ant-design/icons';
 import './login.css';
 
 const { Option } = Select;
@@ -56,24 +56,26 @@ const Login = ({ onClose }) => {
 
   return (
     <div className="login-container">
-      <div className="login-header">Authentication</div>
-      <Tabs activeKey={activeTab} onChange={setActiveTab}>
-        <TabPane tab="Login" key="login">
-          <Form name="login_form" onFinish={handleLogin}>
+      <Tabs activeKey={activeTab} onChange={setActiveTab} centered>
+        <TabPane tab="Sign In" key="login">
+          <div className="login-header">Welcome Back</div>
+          <Form name="login_form" onFinish={handleLogin} layout="vertical">
             <Form.Item
               name="email"
+              label="Email Address"
               rules={[
                 { required: true, message: 'Please input your Email!' },
                 { validator: validateEmail },
               ]}
             >
-              <Input prefix={<UserOutlined />} placeholder="Email" />
+              <Input prefix={<MailOutlined />} placeholder="Enter your email" size="large" />
             </Form.Item>
             <Form.Item
               name="password"
+              label="Password"
               rules={[{ required: true, message: 'Please input your Password!' }]}
             >
-              <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+              <Input.Password prefix={<LockOutlined />} placeholder="Enter your password" size="large" />
             </Form.Item>
             <Form.Item>
               <Button
@@ -81,47 +83,53 @@ const Login = ({ onClose }) => {
                 htmlType="submit"
                 loading={loading}
                 className="login-form-button"
+                size="large"
               >
-                Login
+                Sign In
               </Button>
             </Form.Item>
           </Form>
         </TabPane>
         
         <TabPane tab="Sign Up" key="signup">
-          <Form name="signup_form" onFinish={handleSignUp}>
+          <div className="login-header">Create Account</div>
+          <Form name="signup_form" onFinish={handleSignUp} layout="vertical">
             <Form.Item
               name="name"
+              label="Full Name"
               rules={[{ required: true, message: 'Please input your Name!' }]}
             >
-              <Input prefix={<UserOutlined />} placeholder="Full Name" />
+              <Input prefix={<UserOutlined />} placeholder="Enter your full name" size="large" />
             </Form.Item>
             <Form.Item
               name="userType"
+              label="User Type"
               rules={[{ required: true, message: 'Please select user type!' }]}
             >
-              <Select prefix={<TeamOutlined />} placeholder="Select User Type">
+              <Select prefix={<TeamOutlined />} placeholder="Select User Type" size="large">
                 <Option value="user">User</Option>
                 <Option value="admin">Admin</Option>
               </Select>
             </Form.Item>
             <Form.Item
               name="email"
+              label="Email Address"
               rules={[
                 { required: true, message: 'Please input your Email!' },
                 { validator: validateEmail },
               ]}
             >
-              <Input prefix={<UserOutlined />} placeholder="Email" />
+              <Input prefix={<MailOutlined />} placeholder="Enter your email" size="large" />
             </Form.Item>
             <Form.Item
               name="password"
+              label="Password"
               rules={[
                 { required: true, message: 'Please input your Password!' },
                 { min: 6, message: 'Password must be at least 6 characters!' }
               ]}
             >
-              <Input.Password prefix={<LockOutlined />} placeholder="Password" />
+              <Input.Password prefix={<LockOutlined />} placeholder="Create a password" size="large" />
             </Form.Item>
             <Form.Item>
               <Button
@@ -129,8 +137,9 @@ const Login = ({ onClose }) => {
                 htmlType="submit"
                 loading={loading}
                 className="login-form-button"
+                size="large"
               >
-                Sign Up
+                Create Account
               </Button>
             </Form.Item>
           </Form>
