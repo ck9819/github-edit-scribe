@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Layout, Menu, Button, Badge, Avatar, Dropdown } from 'antd';
-import { useNavigate, Routes, Route, Outlet } from 'react-router-dom';
+import { useNavigate, Outlet } from 'react-router-dom';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -12,6 +12,8 @@ import {
   SettingOutlined,
   BellOutlined,
   LogoutOutlined,
+  BarChartOutlined,
+  TeamOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../../hooks/useAuth';
 import { supplierDetails } from '../../constants';
@@ -127,7 +129,7 @@ const AppLayout = () => {
     },
     {
       key: 'reports',
-      icon: <SettingOutlined />,
+      icon: <BarChartOutlined />,
       label: 'Reports',
       children: [
         {
@@ -141,6 +143,17 @@ const AppLayout = () => {
         {
           key: '/profile/reports/purchase',
           label: 'Purchase Reports',
+        },
+      ],
+    },
+    {
+      key: 'admin',
+      icon: <TeamOutlined />,
+      label: 'Administration',
+      children: [
+        {
+          key: '/profile/admin/users',
+          label: 'User Roles',
         },
       ],
     },

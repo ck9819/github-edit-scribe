@@ -10,7 +10,11 @@ import Dashboard from './components/Dashboard/Dashboard';
 import ItemsList from './components/Inventory/ItemsList';
 import SuppliersList from './components/Purchase/SuppliersList';
 import PurchaseOrdersList from './components/Purchase/PurchaseOrdersList';
+import GoodsReceiptsList from './components/Purchase/GoodsReceiptsList';
 import CustomersList from './components/Sales/CustomersList';
+import SalesOrdersList from './components/Sales/SalesOrdersList';
+import ReportsPage from './components/Reports/ReportsPage';
+import UserRolesList from './components/Admin/UserRolesList';
 import './App.css';
 
 const queryClient = new QueryClient();
@@ -34,7 +38,13 @@ const App = () => {
               <Route path="inventory/items" element={<ItemsList />} />
               <Route path="purchase/suppliers" element={<SuppliersList />} />
               <Route path="purchase/orders" element={<PurchaseOrdersList />} />
+              <Route path="purchase/receipts" element={<GoodsReceiptsList />} />
               <Route path="sales/customers" element={<CustomersList />} />
+              <Route path="sales/orders" element={<SalesOrdersList />} />
+              <Route path="reports/inventory" element={<ReportsPage />} />
+              <Route path="reports/sales" element={<ReportsPage />} />
+              <Route path="reports/purchase" element={<ReportsPage />} />
+              <Route path="admin/users" element={<UserRolesList />} />
             </Route>
           </Routes>
         </AuthWrapper>

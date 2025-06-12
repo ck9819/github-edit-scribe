@@ -40,6 +40,7 @@
     "@vitejs/plugin-react": "^4.4.1",
     "@vitejs/plugin-react-swc": "^3.9.0",
     "dayjs": "^1.11.13",
-    "lovable-tagger": "^1.1.8"
+    "lovable-tagger": "^1.1.8",
+    "recharts": "^2.15.3"
   }
 }
