@@ -1,62 +1,38 @@
-
-import './App.css';
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import { Layout } from 'antd';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthWrapper } from './components/AuthWrapper';
-import LandingPage from './login_ui/landingPage.jsx';
-import UserDashboard from './dashboard/homepage.jsx';
-import SalesTabs from './salesAndPurchase/tabs.jsx';
-import Footer from './footer.jsx';
+import { ConfigProvider } from 'antd';
+import AuthWrapper from './components/AuthWrapper';
+import LandingPage from './login_ui/landingPage';
+import AppLayout from './components/Layout/AppLayout';
+import Dashboard from './components/Dashboard/Dashboard';
+import ItemsList from './components/Inventory/ItemsList';
+import './App.css';
 
-const { Content } = Layout;
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-});
+const queryClient = new QueryClient();
 
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <Layout style={{ minHeight: '100vh' }}>
-        <Content style={{ padding: '0px', marginTop: 0 }}>
-          <div style={{ background: '#fff', minHeight: 380 }}>
-            <Routes>
-              <Route 
-                path="/" 
-                element={
-                  <AuthWrapper requireAuth={false}>
-                    <LandingPage />
-                  </AuthWrapper>
-                } 
-              />
-              <Route 
-                path="/profile/*" 
-                element={
-                  <AuthWrapper requireAuth={true}>
-                    <UserDashboard />
-                  </AuthWrapper>
-                } 
-              />
-              <Route 
-                path="/sales/*" 
-                element={
-                  <AuthWrapper requireAuth={true}>
-                    <SalesTabs />
-                  </AuthWrapper>
-                } 
-              />
-            </Routes>
-          </div>
-        </Content>
-        <Footer />
-      </Layout>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#1890ff',
+          },
+        }}
+      >
+        <AuthWrapper>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/profile" element={<AppLayout />}>
+              <Route index element={<Navigate to="/profile/dashboard" replace />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="inventory/items" element={<ItemsList />} />
+              {/* More routes will be added */}
+            </Route>
+          </Routes>
+        </AuthWrapper>
+      </ConfigProvider>
     </QueryClientProvider>
   );
 };
