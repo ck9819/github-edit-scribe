@@ -56,7 +56,7 @@ const AppLayout = () => {
 
   const menuItems = [
     {
-      key: '/dashboard',
+      key: '/profile/dashboard',
       icon: <AppstoreOutlined />,
       label: 'Dashboard',
     },
@@ -66,23 +66,23 @@ const AppLayout = () => {
       label: 'Inventory',
       children: [
         {
-          key: '/inventory/items',
+          key: '/profile/inventory/items',
           label: 'Items/Products',
         },
         {
-          key: '/inventory/categories',
+          key: '/profile/inventory/categories',
           label: 'Categories',
         },
         {
-          key: '/inventory/brands',
+          key: '/profile/inventory/brands',
           label: 'Brands',
         },
         {
-          key: '/inventory/warehouses',
+          key: '/profile/inventory/warehouses',
           label: 'Warehouses',
         },
         {
-          key: '/inventory/stock-transactions',
+          key: '/profile/inventory/stock-transactions',
           label: 'Stock Transactions',
         },
       ],
@@ -93,15 +93,15 @@ const AppLayout = () => {
       label: 'Purchase',
       children: [
         {
-          key: '/purchase/suppliers',
+          key: '/profile/purchase/suppliers',
           label: 'Suppliers',
         },
         {
-          key: '/purchase/orders',
+          key: '/profile/purchase/orders',
           label: 'Purchase Orders',
         },
         {
-          key: '/purchase/receipts',
+          key: '/profile/purchase/receipts',
           label: 'Goods Receipts',
         },
       ],
@@ -112,15 +112,15 @@ const AppLayout = () => {
       label: 'Sales',
       children: [
         {
-          key: '/sales/customers',
+          key: '/profile/sales/customers',
           label: 'Customers',
         },
         {
-          key: '/sales/orders',
+          key: '/profile/sales/orders',
           label: 'Sales Orders',
         },
         {
-          key: '/sales/invoices',
+          key: '/profile/sales/invoices',
           label: 'Invoices',
         },
       ],
@@ -131,15 +131,15 @@ const AppLayout = () => {
       label: 'Reports',
       children: [
         {
-          key: '/reports/inventory',
+          key: '/profile/reports/inventory',
           label: 'Inventory Reports',
         },
         {
-          key: '/reports/sales',
+          key: '/profile/reports/sales',
           label: 'Sales Reports',
         },
         {
-          key: '/reports/purchase',
+          key: '/profile/reports/purchase',
           label: 'Purchase Reports',
         },
       ],
