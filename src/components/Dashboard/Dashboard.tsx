@@ -1,7 +1,7 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Table, Typography, Alert, Space, Button, Statistic } from 'antd';
 import { useQuery } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../integrations/supabase/client';
 import DashboardCards from './DashboardCards';
 import { EyeOutlined, PlusOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
@@ -10,6 +10,7 @@ const { Title, Text } = Typography;
 
 const Dashboard = () => {
   const [stats, setStats] = useState({});
+  const navigate = useNavigate();
 
   // Fetch dashboard statistics
   const { data: dashboardData, isLoading } = useQuery({
@@ -191,7 +192,12 @@ const Dashboard = () => {
               title={
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{ fontSize: '18px', fontWeight: '600' }}>Recent Stock Movements</span>
-                  <Button type="text" icon={<EyeOutlined />} size="small">
+                  <Button 
+                    type="text" 
+                    icon={<EyeOutlined />} 
+                    size="small"
+                    onClick={() => navigate('/profile/inventory/items')}
+                  >
                     View All
                   </Button>
                 </div>
@@ -233,6 +239,7 @@ const Dashboard = () => {
                       block 
                       size="large"
                       style={{ borderRadius: '8px', height: '48px', fontSize: '15px', fontWeight: '600' }}
+                      onClick={() => navigate('/profile/inventory/items')}
                     >
                       Add New Item
                     </Button>
@@ -241,6 +248,7 @@ const Dashboard = () => {
                       block 
                       size="large"
                       style={{ borderRadius: '8px', height: '48px', fontSize: '15px' }}
+                      onClick={() => navigate('/profile/purchase/orders')}
                     >
                       Create Purchase Order
                     </Button>
@@ -249,6 +257,7 @@ const Dashboard = () => {
                       block 
                       size="large"
                       style={{ borderRadius: '8px', height: '48px', fontSize: '15px' }}
+                      onClick={() => navigate('/profile/sales/orders')}
                     >
                       New Sales Order
                     </Button>

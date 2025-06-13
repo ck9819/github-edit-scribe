@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Card, Row, Col, Table, Select, DatePicker, Button, Statistic } from 'antd';
+import { Card, Row, Col, Table, Select, DatePicker, Button, Statistic, Spin } from 'antd';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, Line, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { useSupabaseQuery } from '../../hooks/useSupabaseQuery';
 import dayjs from 'dayjs';
@@ -12,38 +12,50 @@ const ReportsPage = () => {
   const [reportType, setReportType] = useState('inventory');
   const [dateRange, setDateRange] = useState([dayjs().subtract(30, 'days'), dayjs()]);
 
-  const { data: items = [] } = useSupabaseQuery('itemmaster', 'items');
-  const { data: sales = [] } = useSupabaseQuery('sales', 'sales');
-  const { data: purchaseOrders = [] } = useSupabaseQuery('purchase_orders', 'purchase_orders');
-  const { data: stockTransactions = [] } = useSupabaseQuery('stock_transactions', 'stock_transactions');
+  const { data: items = [], isLoading: itemsLoading } = useSupabaseQuery('itemmaster', 'items');
+  const { data: sales = [], isLoading: salesLoading } = useSupabaseQuery('sales', 'sales');
+  const { data: purchaseOrders = [], isLoading: poLoading } = useSupabaseQuery('purchase_orders', 'purchase_orders');
+  const { data: stockTransactions = [], isLoading: stockLoading } = useSupabaseQuery('stock_transactions', 'stock_transactions');
 
-  // Calculate inventory valuation
+  const isLoading = itemsLoading || salesLoading || poLoading || stockLoading;
+
+  // Calculate inventory valuation safely
   const inventoryValue = items.reduce((total, item) => {
-    return total + (item.currentstock * item.defaultprice || 0);
+    const stock = Number(item.currentstock) || 0;
+    const price = Number(item.defaultprice) || 0;
+    return total + (stock * price);
   }, 0);
 
-  // Low stock items
-  const lowStockItems = items.filter(item => 
-    item.currentstock <= item.reorder_level && item.is_active
-  );
+  // Low stock items with safe comparison
+  const lowStockItems = items.filter(item => {
+    const currentStock = Number(item.currentstock) || 0;
+    const reorderLevel = Number(item.reorder_level) || 0;
+    return currentStock <= reorderLevel && item.is_active;
+  });
 
   // Stock movement data for chart
   const stockMovementData = stockTransactions
-    .filter(tx => dayjs(tx.transaction_date).isBetween(dateRange[0], dateRange[1]))
+    .filter(tx => {
+      if (!tx.transaction_date) return false;
+      const txDate = dayjs(tx.transaction_date);
+      return txDate.isBetween(dateRange[0], dateRange[1], null, '[]');
+    })
     .reduce((acc, tx) => {
       const date = dayjs(tx.transaction_date).format('MM/DD');
+      const quantity = Number(tx.quantity) || 0;
       const existing = acc.find(item => item.date === date);
+      
       if (existing) {
         if (tx.transaction_type === 'IN') {
-          existing.incoming += tx.quantity;
+          existing.incoming += quantity;
         } else {
-          existing.outgoing += tx.quantity;
+          existing.outgoing += quantity;
         }
       } else {
         acc.push({
           date,
-          incoming: tx.transaction_type === 'IN' ? tx.quantity : 0,
-          outgoing: tx.transaction_type === 'OUT' ? tx.quantity : 0,
+          incoming: tx.transaction_type === 'IN' ? quantity : 0,
+          outgoing: tx.transaction_type === 'OUT' ? quantity : 0,
         });
       }
       return acc;
@@ -51,20 +63,29 @@ const ReportsPage = () => {
 
   // Sales data for charts
   const salesData = sales
-    .filter(sale => dayjs(sale.created_at).isBetween(dateRange[0], dateRange[1]))
+    .filter(sale => {
+      if (!sale.created_at) return false;
+      const saleDate = dayjs(sale.created_at);
+      return saleDate.isBetween(dateRange[0], dateRange[1], null, '[]');
+    })
     .reduce((acc, sale) => {
       const month = dayjs(sale.created_at).format('MMM');
+      const total = Number(sale.total_after_tax) || 0;
       const existing = acc.find(item => item.month === month);
+      
       if (existing) {
-        existing.sales += sale.total_after_tax || 0;
+        existing.sales += total;
       } else {
         acc.push({
           month,
-          sales: sale.total_after_tax || 0,
+          sales: total,
         });
       }
       return acc;
     }, []);
+
+  const totalSalesAmount = sales.reduce((sum, sale) => sum + (Number(sale.total_after_tax) || 0), 0);
+  const avgOrderValue = sales.length > 0 ? totalSalesAmount / sales.length : 0;
 
   const renderInventoryReport = () => (
     <div>
@@ -109,17 +130,23 @@ const ReportsPage = () => {
       <Row gutter={16}>
         <Col span={12}>
           <Card title="Stock Movement">
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={stockMovementData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="date" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="incoming" fill="#52c41a" name="Stock In" />
-                <Bar dataKey="outgoing" fill="#ff4d4f" name="Stock Out" />
-              </BarChart>
-            </ResponsiveContainer>
+            {stockMovementData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={stockMovementData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="date" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="incoming" fill="#52c41a" name="Stock In" />
+                  <Bar dataKey="outgoing" fill="#ff4d4f" name="Stock Out" />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '50px' }}>
+                No stock movement data available for the selected period
+              </div>
+            )}
           </Card>
         </Col>
         <Col span={12}>
@@ -133,6 +160,7 @@ const ReportsPage = () => {
               ]}
               pagination={false}
               size="small"
+              locale={{ emptyText: 'No low stock items' }}
             />
           </Card>
         </Col>
@@ -147,7 +175,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Total Sales"
-              value={sales.reduce((sum, sale) => sum + (sale.total_after_tax || 0), 0)}
+              value={totalSalesAmount}
               prefix="₹"
               precision={2}
             />
@@ -165,7 +193,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Avg Order Value"
-              value={sales.length > 0 ? sales.reduce((sum, sale) => sum + (sale.total_after_tax || 0), 0) / sales.length : 0}
+              value={avgOrderValue}
               prefix="₹"
               precision={2}
             />
@@ -182,16 +210,22 @@ const ReportsPage = () => {
       </Row>
 
       <Card title="Sales Trend">
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={salesData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="month" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line type="monotone" dataKey="sales" stroke="#1890ff" strokeWidth={2} />
-          </LineChart>
-        </ResponsiveContainer>
+        {salesData.length > 0 ? (
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={salesData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="month" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="sales" stroke="#1890ff" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+            No sales data available for the selected period
+          </div>
+        )}
       </Card>
     </div>
   );
@@ -227,7 +261,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Total PO Value"
-              value={purchaseOrders.reduce((sum, po) => sum + (po.total_amount || 0), 0)}
+              value={purchaseOrders.reduce((sum, po) => sum + (Number(po.total_amount) || 0), 0)}
               prefix="₹"
               precision={2}
             />
@@ -237,8 +271,17 @@ const ReportsPage = () => {
     </div>
   );
 
+  if (isLoading) {
+    return (
+      <div style={{ textAlign: 'center', padding: '50px' }}>
+        <Spin size="large" />
+        <div style={{ marginTop: 16 }}>Loading reports data...</div>
+      </div>
+    );
+  }
+
   return (
-    <div>
+    <div style={{ padding: '24px' }}>
       <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h2>Reports & Analytics</h2>
         <div style={{ display: 'flex', gap: 16 }}>

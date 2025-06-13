@@ -46,9 +46,12 @@ const UserRoleForm = ({ userRole, userProfiles, onSuccess }) => {
   const handleSubmit = async (values) => {
     try {
       const roleData = {
-        ...values,
+        user_id: values.user_id,
+        role: values.role,
         permissions: selectedPermissions,
       };
+
+      console.log('Submitting role data:', roleData);
 
       if (userRole) {
         await updateUserRoleMutation.mutateAsync({ id: userRole.id, updates: roleData });
@@ -60,7 +63,7 @@ const UserRoleForm = ({ userRole, userProfiles, onSuccess }) => {
       onSuccess();
     } catch (error) {
       console.error('User role operation error:', error);
-      message.error(userRole ? 'Failed to update user role' : 'Failed to assign user role');
+      message.error(`Failed to ${userRole ? 'update' : 'assign'} user role: ${error.message}`);
     }
   };
 
@@ -83,7 +86,7 @@ const UserRoleForm = ({ userRole, userProfiles, onSuccess }) => {
             <Select placeholder="Select user">
               {userProfiles?.map(profile => (
                 <Option key={profile.id} value={profile.id}>
-                  {profile.name || profile.username}
+                  {profile.name || profile.username || profile.id}
                 </Option>
               ))}
             </Select>
