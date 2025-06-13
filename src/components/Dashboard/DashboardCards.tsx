@@ -7,7 +7,7 @@ import {
   UserOutlined, 
   DollarOutlined,
   TrendingUpOutlined,
-  AlertTriangleOutlined
+  ExclamationTriangleOutlined
 } from '@ant-design/icons';
 
 const DashboardCards = ({ stats }) => {
@@ -24,7 +24,7 @@ const DashboardCards = ({ stats }) => {
     {
       title: 'Low Stock Items',
       value: stats?.lowStockItems || 0,
-      icon: <AlertTriangleOutlined style={{ fontSize: '28px' }} />,
+      icon: <ExclamationTriangleOutlined style={{ fontSize: '28px' }} />,
       color: '#ff4d4f',
       bgColor: '#fff2f0',
       trend: '-8%',
