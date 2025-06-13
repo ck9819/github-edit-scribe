@@ -6,7 +6,7 @@ import {
   InboxOutlined, 
   UserOutlined, 
   DollarOutlined,
-  TrendingUpOutlined,
+  RiseOutlined,
   WarningOutlined
 } from '@ant-design/icons';
 
@@ -103,7 +103,7 @@ const DashboardCards = ({ stats }) => {
                   color: card.trend.startsWith('+') ? '#52c41a' : '#ff4d4f',
                   fontWeight: '600'
                 }}>
-                  <TrendingUpOutlined style={{ marginRight: '4px', fontSize: '12px' }} />
+                  <RiseOutlined style={{ marginRight: '4px', fontSize: '12px' }} />
                   {card.trend} from last month
                 </div>
               </div>
