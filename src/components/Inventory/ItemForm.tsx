@@ -19,24 +19,27 @@ const ItemForm = ({ item, categories, brands, onSuccess }) => {
     }
   }, [item, form]);
 
+  const generateSKU = () => {
+    const timestamp = Date.now();
+    return `SKU${timestamp}`;
+  };
+
   const handleSubmit = async (values) => {
     try {
       if (item) {
         await updateItemMutation.mutateAsync({ id: item.id, updates: values });
         message.success('Item updated successfully');
       } else {
-        // Generate SKU number
-        const skuResponse = await fetch('/api/generate-sku', { method: 'POST' });
-        const skuData = await skuResponse.json();
-        
-        await insertItemMutation.mutateAsync({
+        const itemData = {
           ...values,
-          itemid: skuData.sku || `SKU${Date.now()}`,
-        });
+          itemid: generateSKU(),
+        };
+        await insertItemMutation.mutateAsync(itemData);
         message.success('Item created successfully');
       }
       onSuccess();
     } catch (error) {
+      console.error('Item operation error:', error);
       message.error(item ? 'Failed to update item' : 'Failed to create item');
     }
   };
