@@ -1,9 +1,8 @@
-
 import React, { useState } from 'react';
 import { Button, Modal, Layout, Row, Col, Card, Typography, Space } from 'antd';
-import { BarChartOutlined, ShoppingCartOutlined, DatabaseOutlined, TruckOutlined, RocketOutlined, ShieldCheckOutlined } from '@ant-design/icons';
+import { BarChartOutlined, ShoppingCartOutlined, DatabaseOutlined, TruckOutlined, RocketOutlined, SafetyOutlined } from '@ant-design/icons';
 import Login from './login';
-import './login.css';
+import './enhanced-login.css';
 import { supplierDetails } from '../constants';
 
 const { Header, Content, Footer } = Layout;
@@ -47,7 +46,7 @@ const App = () => {
       description: 'Increase operational efficiency by up to 40% with automated processes'
     },
     {
-      icon: <ShieldCheckOutlined style={{ fontSize: '40px', color: '#13c2c2' }} />,
+      icon: <SafetyOutlined style={{ fontSize: '40px', color: '#13c2c2' }} />,
       title: 'Enterprise Security',
       description: 'Bank-grade security with role-based access control and audit trails'
     }
