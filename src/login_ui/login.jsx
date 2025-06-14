@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { validateEmail } from '../utils';
-import { Form, Input, Button, Select, message, Tabs } from 'antd';
+import { Form, Input, Button, Select, message, Tabs, Alert } from 'antd';
 import { UserOutlined, LockOutlined, TeamOutlined, MailOutlined } from '@ant-design/icons';
 import './login.css';
 
@@ -13,16 +13,29 @@ const { TabPane } = Tabs;
 const Login = ({ onClose }) => {
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState('login');
-  const { signIn, signUp } = useAuth();
+  const [showResend, setShowResend] = useState(false);
+  const [unverifiedEmail, setUnverifiedEmail] = useState('');
+  const { signIn, signUp, resendConfirmationEmail } = useAuth();
   const navigate = useNavigate();
+
+  const handleTabChange = (key) => {
+    setShowResend(false);
+    setUnverifiedEmail('');
+    setActiveTab(key);
+  };
 
   const handleLogin = async (values) => {
     setLoading(true);
+    setShowResend(false);
     try {
-      const { error } = await signIn(values.email, values.password);
+      const { data, error } = await signIn(values.email, values.password);
       
       if (error) {
         message.error(error.message);
+      } else if (data.user && !data.user.email_confirmed_at) {
+        message.error('Please verify your email address to log in.');
+        setUnverifiedEmail(values.email);
+        setShowResend(true);
       } else {
         message.success('Login successful');
         navigate('/profile');
@@ -30,6 +43,19 @@ const Login = ({ onClose }) => {
       }
     } catch (error) {
       message.error('Login failed');
+    }
+    setLoading(false);
+  };
+
+  const handleResendEmail = async () => {
+    if (!unverifiedEmail) return;
+    setLoading(true);
+    const { error } = await resendConfirmationEmail(unverifiedEmail);
+    if (error) {
+      message.error(error.message);
+    } else {
+      message.success(`A new verification email has been sent to ${unverifiedEmail}.`);
+      setShowResend(false);
     }
     setLoading(false);
   };
@@ -56,7 +82,7 @@ const Login = ({ onClose }) => {
 
   return (
     <div className="login-container">
-      <Tabs activeKey={activeTab} onChange={setActiveTab} centered>
+      <Tabs activeKey={activeTab} onChange={handleTabChange} centered>
         <TabPane tab="Sign In" key="login">
           <div className="login-header">Welcome Back</div>
           <Form name="login_form" onFinish={handleLogin} layout="vertical">
@@ -89,6 +115,22 @@ const Login = ({ onClose }) => {
               </Button>
             </Form.Item>
           </Form>
+          {showResend && (
+            <Alert
+              message="Email Verification Required"
+              description={
+                <>
+                  You must verify your email before logging in.
+                  <Button type="link" onClick={handleResendEmail} loading={loading} style={{ padding: '0 5px' }}>
+                    Click here to resend the verification email.
+                  </Button>
+                </>
+              }
+              type="warning"
+              showIcon
+              style={{ marginTop: '16px' }}
+            />
+          )}
         </TabPane>
         
         <TabPane tab="Sign Up" key="signup">

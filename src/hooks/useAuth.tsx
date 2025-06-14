@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -70,10 +69,22 @@ export const useAuth = () => {
     return { error };
   };
 
+  const resendConfirmationEmail = async (email: string) => {
+    const { data, error } = await supabase.auth.resend({
+        type: 'signup',
+        email: email,
+        options: {
+            emailRedirectTo: `${window.location.origin}/`,
+        }
+    });
+    return { data, error };
+  };
+
   return {
     ...authState,
     signUp,
     signIn,
     signOut,
+    resendConfirmationEmail,
   };
 };
