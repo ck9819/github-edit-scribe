@@ -279,7 +279,7 @@ export type Database = {
         Row: {
           brand_id: string | null
           buysellboth: string
-          category_id: string | null
+          category_id: string
           counterpartycode: string | null
           created_at: string | null
           currentstock: number | null
@@ -289,7 +289,6 @@ export type Database = {
           hsncode: string | null
           id: string
           is_active: boolean | null
-          itemcategory: string
           itemid: string
           itemname: string
           maximumstocklevel: number | null
@@ -303,7 +302,7 @@ export type Database = {
         Insert: {
           brand_id?: string | null
           buysellboth: string
-          category_id?: string | null
+          category_id: string
           counterpartycode?: string | null
           created_at?: string | null
           currentstock?: number | null
@@ -313,7 +312,6 @@ export type Database = {
           hsncode?: string | null
           id?: string
           is_active?: boolean | null
-          itemcategory: string
           itemid: string
           itemname: string
           maximumstocklevel?: number | null
@@ -327,7 +325,7 @@ export type Database = {
         Update: {
           brand_id?: string | null
           buysellboth?: string
-          category_id?: string | null
+          category_id?: string
           counterpartycode?: string | null
           created_at?: string | null
           currentstock?: number | null
@@ -337,7 +335,6 @@ export type Database = {
           hsncode?: string | null
           id?: string
           is_active?: boolean | null
-          itemcategory?: string
           itemid?: string
           itemname?: string
           maximumstocklevel?: number | null

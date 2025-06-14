@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Table, Button, Space, Tag, Input, Select, message, Modal } from 'antd';
 import { PlusOutlined, EditOutlined, DeleteOutlined, SearchOutlined } from '@ant-design/icons';
@@ -54,10 +53,14 @@ const ItemsList = () => {
     },
     {
       title: 'Category',
-      dataIndex: 'itemcategory',
-      key: 'itemcategory',
-      filters: categories?.map(cat => ({ text: cat.name, value: cat.name })) || [],
-      onFilter: (value, record) => record.itemcategory === value,
+      dataIndex: 'category_id',
+      key: 'category_id',
+      render: (categoryId) => {
+        const category = categories?.find(cat => cat.id === categoryId);
+        return category ? category.name : 'N/A';
+      },
+      filters: categories?.map(cat => ({ text: cat.name, value: cat.id })) || [],
+      onFilter: (value, record) => record.category_id === value,
     },
     {
       title: 'Product/Service',
@@ -127,7 +130,7 @@ const ItemsList = () => {
       item.itemname.toLowerCase().includes(searchText.toLowerCase()) ||
       item.itemid.toLowerCase().includes(searchText.toLowerCase());
     
-    const matchesCategory = !filterCategory || item.itemcategory === filterCategory;
+    const matchesCategory = !filterCategory || item.category_id === filterCategory;
     
     return matchesSearch && matchesCategory;
   });
@@ -148,7 +151,7 @@ const ItemsList = () => {
             onChange={setFilterCategory}
           >
             {categories?.map(category => (
-              <Option key={category.id} value={category.name}>
+              <Option key={category.id} value={category.id}>
                 {category.name}
               </Option>
             ))}

@@ -20,13 +20,13 @@ const ItemFormFields = ({ categories }) => {
         
         <Col span={12}>
           <Form.Item
-            name="itemcategory"
+            name="category_id"
             label="Category"
             rules={[{ required: true, message: 'Please select category' }]}
           >
             <Select placeholder="Select category">
               {categories?.map(category => (
-                <Option key={category.id} value={category.name}>
+                <Option key={category.id} value={category.id}>
                   {category.name}
                 </Option>
               ))}
