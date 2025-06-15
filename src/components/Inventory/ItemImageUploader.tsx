@@ -14,11 +14,16 @@ const ItemImageUploader = ({ images, onImagesChange }) => {
       const fileName = `${Date.now()}.${fileExt}`;
       const filePath = `item-images/${fileName}`;
 
+      console.log('Uploading file:', filePath);
+
       const { error: uploadError } = await supabase.storage
         .from('item-images')
         .upload(filePath, file);
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        throw uploadError;
+      }
 
       const { data } = supabase.storage
         .from('item-images')
@@ -36,7 +41,7 @@ const ItemImageUploader = ({ images, onImagesChange }) => {
       message.success('Image uploaded successfully');
     } catch (error) {
       console.error('Image upload error:', error);
-      message.error('Failed to upload image');
+      message.error(`Failed to upload image: ${error.message}`);
     } finally {
       setImageUploading(false);
     }
@@ -46,9 +51,13 @@ const ItemImageUploader = ({ images, onImagesChange }) => {
   const handleRemoveImage = async (image) => {
     try {
       if (image.path) {
-        await supabase.storage
+        const { error } = await supabase.storage
           .from('item-images')
           .remove([image.path]);
+        
+        if (error) {
+          console.error('Error removing from storage:', error);
+        }
       }
       onImagesChange(images.filter(img => img.uid !== image.uid));
       message.success('Image removed successfully');
@@ -71,7 +80,7 @@ const ItemImageUploader = ({ images, onImagesChange }) => {
         </Button>
       </Upload>
       
-      {images.length > 0 && (
+      {images && images.length > 0 && (
         <div className="grid grid-cols-4 gap-4">
           {images.map((image) => (
             <div key={image.uid} className="relative">

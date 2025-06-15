@@ -20,23 +20,24 @@ const ReportsPage = () => {
   const isLoading = itemsLoading || salesLoading || poLoading || stockLoading;
 
   // Calculate inventory valuation safely
-  const inventoryValue = items.reduce((total, item) => {
-    const stock = Number(item.currentstock) || 0;
-    const price = Number(item.defaultprice) || 0;
+  const inventoryValue = Array.isArray(items) ? items.reduce((total, item) => {
+    const stock = Number(item?.currentstock) || 0;
+    const price = Number(item?.defaultprice) || 0;
     return total + (stock * price);
-  }, 0);
+  }, 0) : 0;
 
   // Low stock items with safe comparison
-  const lowStockItems = items.filter(item => {
+  const lowStockItems = Array.isArray(items) ? items.filter(item => {
+    if (!item) return false;
     const currentStock = Number(item.currentstock) || 0;
     const reorderLevel = Number(item.reorder_level) || 0;
     return currentStock <= reorderLevel && item.is_active;
-  });
+  }) : [];
 
   // Stock movement data for chart
-  const stockMovementData = stockTransactions
+  const stockMovementData = Array.isArray(stockTransactions) ? stockTransactions
     .filter(tx => {
-      if (!tx.transaction_date) return false;
+      if (!tx?.transaction_date) return false;
       const txDate = dayjs(tx.transaction_date);
       return txDate.isBetween(dateRange[0], dateRange[1], null, '[]');
     })
@@ -59,12 +60,12 @@ const ReportsPage = () => {
         });
       }
       return acc;
-    }, []);
+    }, []) : [];
 
   // Sales data for charts
-  const salesData = sales
+  const salesData = Array.isArray(sales) ? sales
     .filter(sale => {
-      if (!sale.created_at) return false;
+      if (!sale?.created_at) return false;
       const saleDate = dayjs(sale.created_at);
       return saleDate.isBetween(dateRange[0], dateRange[1], null, '[]');
     })
@@ -82,9 +83,9 @@ const ReportsPage = () => {
         });
       }
       return acc;
-    }, []);
+    }, []) : [];
 
-  const totalSalesAmount = sales.reduce((sum, sale) => sum + (Number(sale.total_after_tax) || 0), 0);
+  const totalSalesAmount = Array.isArray(sales) ? sales.reduce((sum, sale) => sum + (Number(sale?.total_after_tax) || 0), 0) : 0;
   const avgOrderValue = sales.length > 0 ? totalSalesAmount / sales.length : 0;
 
   const renderInventoryReport = () => (
@@ -104,7 +105,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Total Items"
-              value={items.length}
+              value={Array.isArray(items) ? items.length : 0}
             />
           </Card>
         </Col>
@@ -121,7 +122,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Active Items"
-              value={items.filter(item => item.is_active).length}
+              value={Array.isArray(items) ? items.filter(item => item?.is_active).length : 0}
             />
           </Card>
         </Col>
@@ -185,7 +186,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Total Orders"
-              value={sales.length}
+              value={Array.isArray(sales) ? sales.length : 0}
             />
           </Card>
         </Col>
@@ -203,7 +204,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Pending Orders"
-              value={sales.filter(sale => sale.deal_status === 'PENDING').length}
+              value={Array.isArray(sales) ? sales.filter(sale => sale?.deal_status === 'PENDING').length : 0}
             />
           </Card>
         </Col>
@@ -237,7 +238,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Total Purchase Orders"
-              value={purchaseOrders.length}
+              value={Array.isArray(purchaseOrders) ? purchaseOrders.length : 0}
             />
           </Card>
         </Col>
@@ -245,7 +246,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Pending POs"
-              value={purchaseOrders.filter(po => po.status === 'PENDING').length}
+              value={Array.isArray(purchaseOrders) ? purchaseOrders.filter(po => po?.status === 'PENDING').length : 0}
             />
           </Card>
         </Col>
@@ -253,7 +254,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Confirmed POs"
-              value={purchaseOrders.filter(po => po.status === 'CONFIRMED').length}
+              value={Array.isArray(purchaseOrders) ? purchaseOrders.filter(po => po?.status === 'CONFIRMED').length : 0}
             />
           </Card>
         </Col>
@@ -261,7 +262,7 @@ const ReportsPage = () => {
           <Card>
             <Statistic
               title="Total PO Value"
-              value={purchaseOrders.reduce((sum, po) => sum + (Number(po.total_amount) || 0), 0)}
+              value={Array.isArray(purchaseOrders) ? purchaseOrders.reduce((sum, po) => sum + (Number(po?.total_amount) || 0), 0) : 0}
               prefix="₹"
               precision={2}
             />
