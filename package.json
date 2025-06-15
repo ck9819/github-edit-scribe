@@ -3,7 +3,6 @@
   "private": true,
   "version": "1.0.0",
   "description": "Full-stack YesPee application (Backend + Frontend)",
-  
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -40,6 +39,7 @@
     "lovable-tagger": "^1.1.8",
     "react-dropzone": "^14.3.8",
     "recharts": "^2.15.3",
+    "vite": "^6.3.5",
     "xlsx": "^0.18.5"
   }
 }
