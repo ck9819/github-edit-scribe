@@ -11,7 +11,7 @@ import SalesPage from './salesAndPurchase/salesPage.jsx';
 // Removed broken import: import QuotationForm from './salesAndPurchase/quotationForm.jsx';
 import QuotationForm from './components/Sales/QuotationForm';
 import SalesAndPurchase from './salesAndPurchase/tabs';
-import QuotationsPage from './salesAndPurchase/quotationPage.jsx';
+// Removed broken import: import QuotationsPage from './salesAndPurchase/quotationPage.jsx';
 import SalesManagement from './components/Sales/SalesManagement';
 
 const queryClient = new QueryClient();
@@ -40,7 +40,7 @@ const AppContent = () => {
       <Route path="/salespage" element={<AppLayout><SalesPage /></AppLayout>} />
       <Route path="/quotation" element={<AppLayout><QuotationForm /></AppLayout>} />
       <Route path="/salesandpurchase" element={<AppLayout><SalesAndPurchase /></AppLayout>} />
-      <Route path="/quotations" element={<AppLayout><QuotationsPage /></AppLayout>} />
+      {/* Removed broken route: QuotationsPage */}
       <Route path="/sales" element={<AppLayout><SalesManagement /></AppLayout>} />
     </Routes>
   );
