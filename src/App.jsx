@@ -1,17 +1,18 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuth } from './hooks/useAuth';
 import AuthWrapper from './AuthContext';
 import Dashboard from './components/Dashboard/Dashboard';
-import CompanyForm from '../frontend/src/companyForm';
-import PartForm from '../frontend/src/partForm';
-import ItemList from '../frontend/src/itemList';
-import CompanyList from '../frontend/src/companyList';
-import SalesPage from '../frontend/src/salesPage';
-import QuotationForm from '../frontend/src/quotationForm';
+import CompanyForm from './salesAndPurchase/companyForm.jsx';
+import PartForm from './salesAndPurchase/partsForm.jsx';
+import ItemList from './salesAndPurchase/itemList.jsx';
+import CompanyList from './salesAndPurchase/companyList.jsx';
+import SalesPage from './salesAndPurchase/salesPage.jsx';
+import QuotationForm from './salesAndPurchase/quotationForm.jsx';
 import SalesAndPurchase from './salesAndPurchase/tabs';
-import QuotationsPage from './salesAndPurchase/quotationPage';
+import QuotationsPage from './salesAndPurchase/quotationPage.jsx';
 import SalesManagement from './components/Sales/SalesManagement';
 
 const queryClient = new QueryClient();
