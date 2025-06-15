@@ -18,7 +18,10 @@ export default defineConfig(async ({ mode }) => {
 
   return {
     plugins: [
-      react(),
+      react({
+        // Use the classic JSX runtime to avoid issues with react/jsx-runtime resolution.
+        jsxRuntime: 'classic',
+      }),
       mode === 'development' && componentTagger && componentTagger(),
     ].filter(Boolean),
     server: {
