@@ -2,8 +2,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { useAuth } from './hooks/useAuth';
-import AuthWrapper from './AuthContext';
+// Remove incorrect import: import { useAuth } from './hooks/useAuth';
+// Remove: import AuthWrapper from './AuthContext';
+import AuthWrapper from './components/AuthWrapper';
 import Dashboard from './components/Dashboard/Dashboard';
 import CompanyForm from './salesAndPurchase/companyForm.jsx';
 import PartForm from './salesAndPurchase/partsForm.jsx';
@@ -17,12 +18,10 @@ import SalesManagement from './components/Sales/SalesManagement';
 const queryClient = new QueryClient();
 
 const AppLayout = ({ children }) => {
-  const { user } = useAuth();
+  // Removed: const { user } = useAuth();
 
-  if (!user) {
-    return <p>Please log in to access this page.</p>;
-  }
-
+  // Hide page content until AuthWrapper loading finishes
+  // User auth status is managed inside AuthWrapper now
   return (
     <div style={{ padding: '20px' }}>
       <h2>Welcome to the App!</h2>
