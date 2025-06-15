@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -7,8 +6,8 @@ import AuthWrapper from './AuthContext';
 import Dashboard from './components/Dashboard/Dashboard';
 import CompanyForm from '../frontend/src/companyForm';
 import PartForm from '../frontend/src/partForm';
-import ItemList from './itemList';
-import CompanyList from './companyList';
+import ItemList from '../frontend/src/itemList';
+import CompanyList from '../frontend/src/companyList';
 import SalesPage from '../frontend/src/salesPage';
 import QuotationForm from '../frontend/src/quotationForm';
 import SalesAndPurchase from './salesAndPurchase/tabs';
