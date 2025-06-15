@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext } from 'react';
 import { useAuth } from './hooks/useAuth';
-import AuthWrapper from './components/AuthWrapper';
+// Removed: import AuthWrapper from './components/AuthWrapper';
 
 const AuthContext = createContext();
 
@@ -18,12 +18,11 @@ export const AuthWrapper = ({ children }) => {
   
   return (
     <AuthContext.Provider value={auth}>
-      <AuthWrapper>
-        {children}
-      </AuthWrapper>
+      {children}
     </AuthContext.Provider>
   );
 };
 
 // Export useAuth hook for backward compatibility
 export { useAuth };
+
