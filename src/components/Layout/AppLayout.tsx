@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout, Menu, Button, Badge, Avatar, Dropdown, Space } from 'antd';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
@@ -115,6 +114,10 @@ const AppLayout = () => {
       icon: <ShoppingCartOutlined />,
       label: 'Sales',
       children: [
+        {
+          key: '/profile/sales',
+          label: 'Quotations',
+        },
         {
           key: '/profile/sales/customers',
           label: 'Customers',
