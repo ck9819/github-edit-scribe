@@ -1,7 +1,9 @@
+
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { AuthWrapper, useAuth } from './AuthContext';
+import { useAuth } from './hooks/useAuth';
+import AuthWrapper from './components/AuthWrapper';
 import Dashboard from './Dashboard';
 import CompanyForm from './companyForm';
 import PartForm from './partForm';
@@ -16,9 +18,9 @@ import SalesManagement from './components/Sales/SalesManagement';
 const queryClient = new QueryClient();
 
 const AppLayout = ({ children }) => {
-  const { isLoggedIn } = useAuth();
+  const { user } = useAuth();
 
-  if (!isLoggedIn) {
+  if (!user) {
     return <p>Please log in to access this page.</p>;
   }
 
@@ -30,23 +32,29 @@ const AppLayout = ({ children }) => {
   );
 };
 
+const AppContent = () => {
+  return (
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/add-company" element={<AppLayout><CompanyForm /></AppLayout>} />
+      <Route path="/add-part" element={<AppLayout><PartForm /></AppLayout>} />
+      <Route path="/items" element={<AppLayout><ItemList /></AppLayout>} />
+      <Route path="/companies" element={<AppLayout><CompanyList /></AppLayout>} />
+      <Route path="/salespage" element={<AppLayout><SalesPage /></AppLayout>} />
+      <Route path="/quotation" element={<AppLayout><QuotationForm /></AppLayout>} />
+      <Route path="/salesandpurchase" element={<AppLayout><SalesAndPurchase /></AppLayout>} />
+      <Route path="/quotations" element={<AppLayout><QuotationsPage /></AppLayout>} />
+      <Route path="/sales" element={<AppLayout><SalesManagement /></AppLayout>} />
+    </Routes>
+  );
+};
+
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
         <AuthWrapper>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/add-company" element={<AppLayout><CompanyForm /></AppLayout>} />
-            <Route path="/add-part" element={<AppLayout><PartForm /></AppLayout>} />
-            <Route path="/items" element={<AppLayout><ItemList /></AppLayout>} />
-            <Route path="/companies" element={<AppLayout><CompanyList /></AppLayout>} />
-            <Route path="/salespage" element={<AppLayout><SalesPage /></AppLayout>} />
-            <Route path="/quotation" element={<AppLayout><QuotationForm /></AppLayout>} />
-            <Route path="/salesandpurchase" element={<AppLayout><SalesAndPurchase /></AppLayout>} />
-            <Route path="/quotations" element={<AppLayout><QuotationsPage /></AppLayout>} />
-            <Route path="/sales" element={<AppLayout><SalesManagement /></AppLayout>} />
-          </Routes>
+          <AppContent />
         </AuthWrapper>
       </Router>
     </QueryClientProvider>
