@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuth } from './hooks/useAuth';
 import AuthWrapper from './components/AuthWrapper';
-import Dashboard from './Dashboard';
+import Dashboard from './components/Dashboard/Dashboard';
 import CompanyForm from './companyForm';
 import PartForm from './partForm';
 import ItemList from './itemList';
