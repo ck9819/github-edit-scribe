@@ -3,10 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "description": "Full-stack YesPee application (Backend + Frontend)",
-  "workspaces": [
-    "backend",
-    "frontend"
-  ],
+  
   "scripts": {
     "dev": "vite",
     "build": "vite build",
