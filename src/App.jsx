@@ -4,12 +4,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { useAuth } from './hooks/useAuth';
 import AuthWrapper from './AuthContext';
 import Dashboard from './components/Dashboard/Dashboard';
-import CompanyForm from './salesAndPurchase/companyForm.jsx';
-import PartForm from './salesAndPurchase/partsForm.jsx';
-import SalesPage from './salesAndPurchase/salesPage.jsx';
-import QuotationForm from './salesAndPurchase/quotationForm.jsx';
+//import CompanyForm from './salesAndPurchase/companyForm.jsx';
+//import PartForm from './salesAndPurchase/partsForm.jsx';
+//import SalesPage from './salesAndPurchase/salesPage.jsx';
+//import QuotationForm from './salesAndPurchase/quotationForm.jsx';
 import SalesAndPurchase from './salesAndPurchase/tabs';
-import QuotationsPage from './salesAndPurchase/quotationPage.jsx';
+//import QuotationsPage from './salesAndPurchase/quotationPage.jsx';
 import SalesManagement from './components/Sales/SalesManagement';
 
 const queryClient = new QueryClient();
