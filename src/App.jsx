@@ -6,7 +6,6 @@ import AuthWrapper from './AuthContext';
 import Dashboard from './components/Dashboard/Dashboard';
 import CompanyForm from './salesAndPurchase/companyForm.jsx';
 import PartForm from './salesAndPurchase/partsForm.jsx';
-import CompanyList from './salesAndPurchase/companyList.jsx';
 import SalesPage from './salesAndPurchase/salesPage.jsx';
 import QuotationForm from './salesAndPurchase/quotationForm.jsx';
 import SalesAndPurchase from './salesAndPurchase/tabs';
@@ -36,7 +35,6 @@ const AppContent = () => {
       <Route path="/" element={<Dashboard />} />
       <Route path="/add-company" element={<AppLayout><CompanyForm /></AppLayout>} />
       <Route path="/add-part" element={<AppLayout><PartForm /></AppLayout>} />
-      <Route path="/companies" element={<AppLayout><CompanyList /></AppLayout>} />
       <Route path="/salespage" element={<AppLayout><SalesPage /></AppLayout>} />
       <Route path="/quotation" element={<AppLayout><QuotationForm /></AppLayout>} />
       <Route path="/salesandpurchase" element={<AppLayout><SalesAndPurchase /></AppLayout>} />
