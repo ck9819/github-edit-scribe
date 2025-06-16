@@ -37,6 +37,12 @@ export default defineConfig(async ({ mode }) => {
     build: {
       outDir: 'dist',
       sourcemap: true,
+      rollupOptions: {
+        external: [],
+      },
+    },
+    optimizeDeps: {
+      include: ['react', 'react-dom'],
     },
   };
 });
