@@ -1,9 +1,12 @@
-
 import React, { useState } from 'react';
 import { Card, Row, Col, Table, Select, DatePicker, Button, Statistic, Spin } from 'antd';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, Line, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import { useSupabaseQuery } from '../../hooks/useSupabaseQuery';
 import dayjs from 'dayjs';
+import isBetween from 'dayjs/plugin/isBetween';
+
+// Extend dayjs with isBetween plugin
+dayjs.extend(isBetween);
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
