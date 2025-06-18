@@ -20,6 +20,11 @@ import SuppliersList from './components/Purchase/SuppliersList';
 import PurchaseOrdersList from './components/Purchase/PurchaseOrdersList';
 import GoodsReceiptsList from './components/Purchase/GoodsReceiptsList';
 
+//Reports components
+import ReportsPage from './components/Reports/ReportsPage';
+//Administration components
+import userRolesList from './components/Admin/UserRolesList';
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -47,6 +52,14 @@ const App = () => {
               <Route path="purchase/suppliers" element={<SuppliersList />} />
               <Route path="purchase/orders" element={<PurchaseOrdersList />} />
               <Route path="purchase/receipts" element={<GoodsReceiptsList />} />
+
+              {/* Reports Routes */}
+              <Route path="reports/inventory" element={<ReportsPage />} />
+              <Route path="reports/sales" element={<ReportsPage />} />
+              <Route path="reports/purchase" element={<ReportsPage />} />
+
+              {/* Administration Routes */}
+              <Route path="admin/users" element={<userRolesList />} />
             </Route>
 
             <Route path="*" element={<Navigate to="/profile/dashboard" replace />} />
