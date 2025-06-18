@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Layout, Menu, Button, Badge, Avatar, Dropdown, Space } from 'antd';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
@@ -15,6 +14,8 @@ import {
   BarChartOutlined,
   TeamOutlined,
   DatabaseOutlined,
+  FileTextOutlined,
+  ExperimentOutlined,
 } from '@ant-design/icons';
 import { useAuth } from '../../hooks/useAuth';
 import { supplierDetails } from '../../constants';
@@ -68,6 +69,24 @@ const AppLayout = () => {
       key: '/profile/inventory',
       icon: <InboxOutlined />,
       label: 'Inventory',
+      children: [
+        {
+          key: '/profile/inventory/items',
+          label: 'Items/Products',
+        },
+        {
+          key: '/profile/inventory/warehouses',
+          label: 'Warehouses',
+        },
+        {
+          key: '/profile/inventory/batches',
+          label: 'Batch & Expiry',
+        },
+        {
+          key: '/profile/inventory/reorder',
+          label: 'Smart Reorder',
+        },
+      ],
     },
     {
       key: '/profile/purchase',
@@ -80,10 +99,19 @@ const AppLayout = () => {
       label: 'Sales',
     },
     {
+      key: '/profile/invoicing',
+      icon: <FileTextOutlined />,
+      label: 'Invoicing',
+    },
+    {
       key: 'reports',
       icon: <BarChartOutlined />,
       label: 'Reports',
       children: [
+        {
+          key: '/profile/reports/advanced',
+          label: 'Advanced Analytics',
+        },
         {
           key: '/profile/reports/inventory',
           label: 'Inventory Reports',

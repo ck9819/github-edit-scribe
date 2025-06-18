@@ -1,9 +1,10 @@
-
 import React from 'react';
 import { Tabs } from 'antd';
-import { InboxOutlined, HomeOutlined, TagsOutlined, AppstoreOutlined } from '@ant-design/icons';
+import { InboxOutlined, HomeOutlined, TagsOutlined, AppstoreOutlined, ExperimentOutlined, BellOutlined } from '@ant-design/icons';
 import ItemsList from './ItemsList';
 import WarehousesList from './WarehousesList';
+import BatchManagement from './BatchManagement';
+import SmartReorderSystem from './SmartReorderSystem';
 
 const { TabPane } = Tabs;
 
@@ -32,6 +33,28 @@ const InventoryManagement = () => {
           key="warehouses"
         >
           <WarehousesList />
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <ExperimentOutlined />
+              Batch & Expiry
+            </span>
+          }
+          key="batches"
+        >
+          <BatchManagement />
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <BellOutlined />
+              Smart Reorder
+            </span>
+          }
+          key="reorder"
+        >
+          <SmartReorderSystem />
         </TabPane>
         <TabPane
           tab={
