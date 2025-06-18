@@ -32,7 +32,7 @@ const QuotationForm = () => {
   const [quotationData, setQuotationData] = useState<any>(null);
 
   const { data: customers = [] } = useSupabaseQuery('customers', 'customers', { is_active: true });
-  const { data: inventoryItems = [] } = useSupabaseQuery('items', 'itemmaster', { is_active: true });
+  const { data: inventoryItems = [] } = useSupabaseQuery('itemmaster', 'itemmaster', { is_active: true });
 
   useEffect(() => {
     generateQuotationNumber();
@@ -127,7 +127,7 @@ const QuotationForm = () => {
             if (selectedItem) {
               updateItem(record.key, 'description', value);
               updateItem(record.key, 'hsnSacCode', selectedItem.hsncode || '');
-              updateItem(record.key, 'rate', selectedItem.price || 0);
+              updateItem(record.key, 'rate', selectedItem.defaultprice || 0);
             }
           }}
           showSearch
