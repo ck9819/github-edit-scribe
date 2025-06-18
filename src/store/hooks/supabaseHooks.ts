@@ -1,14 +1,6 @@
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { supabase } from '@/integrations/supabase/client';
-import type { Database } from '@/integrations/supabase/types';
-
-type Company = Database['public']['Tables']['company']['Row'];
-type CompanyInsert = Database['public']['Tables']['company']['Insert'];
-type ItemMaster = Database['public']['Tables']['itemmaster']['Row'];
-type ItemMasterInsert = Database['public']['Tables']['itemmaster']['Insert'];
-type Sales = Database['public']['Tables']['sales']['Row'];
-type SalesInsert = Database['public']['Tables']['sales']['Insert'];
+import { supabase } from '../../integrations/supabase/client';
 
 // Company hooks
 export const useCompanies = () => {
@@ -47,7 +39,7 @@ export const useAddCompany = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (company: CompanyInsert) => {
+    mutationFn: async (company: any) => {
       const { data, error } = await supabase
         .from('company')
         .insert(company)
@@ -98,7 +90,7 @@ export const useAddItem = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (item: ItemMasterInsert) => {
+    mutationFn: async (item: any) => {
       const { data, error } = await supabase
         .from('itemmaster')
         .insert(item)
@@ -151,7 +143,7 @@ export const useAddSalesEnquiry = () => {
   const queryClient = useQueryClient();
   
   return useMutation({
-    mutationFn: async (sales: SalesInsert) => {
+    mutationFn: async (sales: any) => {
       const { data, error } = await supabase
         .from('sales')
         .insert(sales)

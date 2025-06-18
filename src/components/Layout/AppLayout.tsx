@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Layout, Menu, Button, Badge, Avatar, Dropdown, Space } from 'antd';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
@@ -64,73 +65,19 @@ const AppLayout = () => {
       label: 'Dashboard',
     },
     {
-      key: 'inventory',
+      key: '/profile/inventory',
       icon: <InboxOutlined />,
       label: 'Inventory',
-      children: [
-        {
-          key: '/profile/inventory/items',
-          label: 'Items/Products',
-        },
-        {
-          key: '/profile/inventory/categories',
-          label: 'Categories',
-        },
-        {
-          key: '/profile/inventory/brands',
-          label: 'Brands',
-        },
-        {
-          key: '/profile/inventory/warehouses',
-          label: 'Warehouses',
-        },
-        {
-          key: '/profile/inventory/stock-transactions',
-          label: 'Stock Transactions',
-        },
-      ],
     },
     {
-      key: 'purchase',
+      key: '/profile/purchase',
       icon: <ShoppingCartOutlined />,
       label: 'Purchase',
-      children: [
-        {
-          key: '/profile/purchase/suppliers',
-          label: 'Suppliers',
-        },
-        {
-          key: '/profile/purchase/orders',
-          label: 'Purchase Orders',
-        },
-        {
-          key: '/profile/purchase/receipts',
-          label: 'Goods Receipts',
-        },
-      ],
     },
     {
-      key: 'sales',
+      key: '/profile/sales',
       icon: <ShoppingCartOutlined />,
       label: 'Sales',
-      children: [
-        {
-          key: '/profile/sales',
-          label: 'Quotations',
-        },
-        {
-          key: '/profile/sales/customers',
-          label: 'Customers',
-        },
-        {
-          key: '/profile/sales/orders',
-          label: 'Sales Orders',
-        },
-        {
-          key: '/profile/sales/invoices',
-          label: 'Invoices',
-        },
-      ],
     },
     {
       key: 'reports',
