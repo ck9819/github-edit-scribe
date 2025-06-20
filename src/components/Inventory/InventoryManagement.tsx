@@ -3,6 +3,8 @@ import { Tabs } from 'antd';
 import { InboxOutlined, HomeOutlined, TagsOutlined, AppstoreOutlined, ExperimentOutlined, BellOutlined } from '@ant-design/icons';
 import ItemsList from './ItemsList';
 import WarehousesList from './WarehousesList';
+import CategoriesManagement from './CategoriesManagement';
+import BrandsManagement from './BrandsManagement';
 import BatchManagement from './BatchManagement';
 import SmartReorderSystem from './SmartReorderSystem';
 
@@ -22,6 +24,28 @@ const InventoryManagement = () => {
           key="items"
         >
           <ItemsList />
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <TagsOutlined />
+              Categories
+            </span>
+          }
+          key="categories"
+        >
+          <CategoriesManagement />
+        </TabPane>
+        <TabPane
+          tab={
+            <span>
+              <AppstoreOutlined />
+              Brands
+            </span>
+          }
+          key="brands"
+        >
+          <BrandsManagement />
         </TabPane>
         <TabPane
           tab={
@@ -55,34 +79,6 @@ const InventoryManagement = () => {
           key="reorder"
         >
           <SmartReorderSystem />
-        </TabPane>
-        <TabPane
-          tab={
-            <span>
-              <TagsOutlined />
-              Categories
-            </span>
-          }
-          key="categories"
-        >
-          <div style={{ padding: '40px', textAlign: 'center' }}>
-            <h3>Categories Management</h3>
-            <p>Categories management features coming soon...</p>
-          </div>
-        </TabPane>
-        <TabPane
-          tab={
-            <span>
-              <AppstoreOutlined />
-              Brands
-            </span>
-          }
-          key="brands"
-        >
-          <div style={{ padding: '40px', textAlign: 'center' }}>
-            <h3>Brands Management</h3>
-            <p>Brands management features coming soon...</p>
-          </div>
         </TabPane>
       </Tabs>
     </div>
