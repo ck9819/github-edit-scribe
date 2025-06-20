@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Row, Col, Select, DatePicker, Button, Table, Statistic, Tabs, Space } from 'antd';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LineChart, Line, PieChart, Pie, Cell, ResponsiveContainer, AreaChart, Area } from 'recharts';
 import { useSupabaseQuery } from '../../hooks/useSupabaseQuery';
-import { DownloadOutlined, TrendingUpOutlined, TrendingDownOutlined } from '@ant-design/icons';
+import { DownloadOutlined, ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import dayjs from 'dayjs';
 
 const { RangePicker } = DatePicker;
@@ -203,7 +203,7 @@ const AdvancedReports = () => {
                 <Statistic
                   title="Fast Moving Items"
                   value={velocityDistribution[0].value}
-                  prefix={<TrendingUpOutlined />}
+                  prefix={<ArrowUpOutlined />}
                   valueStyle={{ color: '#52c41a' }}
                 />
               </Card>
@@ -213,7 +213,7 @@ const AdvancedReports = () => {
                 <Statistic
                   title="Slow Moving Items"
                   value={velocityDistribution[2].value}
-                  prefix={<TrendingDownOutlined />}
+                  prefix={<ArrowDownOutlined />}
                   valueStyle={{ color: '#ff4d4f' }}
                 />
               </Card>
