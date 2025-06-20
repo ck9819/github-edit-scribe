@@ -1,88 +1,84 @@
 
 import React, { useState } from 'react';
-import { Modal, Button, Upload, Table, message } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
+import { Modal, Upload, Button, message, Table } from 'antd';
+import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 import * as XLSX from 'xlsx';
 import { useSupabaseInsert } from '../../hooks/useSupabaseQuery';
 
 const { Dragger } = Upload;
 
-const BulkUploadModal = ({ onSuccess, onCancel, open }) => {
-  const [previewData, setPreviewData] = useState([]);
+const BulkUploadModal = ({ open, onCancel, onSuccess }) => {
+  const [fileData, setFileData] = useState([]);
   const [uploading, setUploading] = useState(false);
+  
   const insertItemMutation = useSupabaseInsert('itemmaster', 'items');
 
-  const generateSKU = () => {
-    const timestamp = Date.now();
-    return `SKU${timestamp}`;
-  };
-  
-  const handleExcelUpload = (file) => {
+  const handleFileUpload = (file) => {
     const reader = new FileReader();
     reader.onload = (e) => {
       try {
-        const data = new Uint8Array(e.target.result as ArrayBuffer);
+        const data = new Uint8Array(e.target.result);
         const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
         const jsonData = XLSX.utils.sheet_to_json(worksheet);
         
-        const mappedData = jsonData.map((row: any, index) => ({
-          key: index,
-          itemname: row['Item Name'] || row['itemname'] || '',
-          itemcategory: row['Category'] || row['itemcategory'] || '',
-          productservice: row['Type'] || row['productservice'] || 'Product',
-          buysellboth: row['Buy/Sell'] || row['buysellboth'] || 'Both',
-          unitofmeasurement: row['Unit'] || row['unitofmeasurement'] || 'pcs',
-          defaultprice: parseFloat(row['Price'] || row['defaultprice'] || 0),
-          hsncode: row['HSN Code'] || row['hsncode'] || '',
-          currentstock: parseInt(row['Current Stock'] || row['currentstock'] || 0),
-          reorder_level: parseInt(row['Reorder Level'] || row['reorder_level'] || 10),
-          minimumstocklevel: parseInt(row['Minimum Stock'] || row['minimumstocklevel'] || 5),
-        }));
-        
-        setPreviewData(mappedData);
+        setFileData(jsonData);
+        message.success('File parsed successfully');
       } catch (error) {
-        message.error('Error reading Excel file. Please check the format.');
-        console.error('Excel parsing error:', error);
+        message.error('Error parsing file');
       }
     };
     reader.readAsArrayBuffer(file);
     return false;
   };
 
-  const handleBulkInsert = async () => {
+  const generateSKU = () => {
+    const timestamp = Date.now();
+    return `SKU${timestamp}`;
+  };
+
+  const handleBulkUpload = async () => {
+    if (fileData.length === 0) {
+      message.error('Please upload a file first');
+      return;
+    }
+
     setUploading(true);
     try {
-      for (const itemData of previewData) {
-        const newItem = {
-          ...itemData,
+      for (const row of fileData) {
+        const itemData = {
           itemid: generateSKU(),
+          itemname: row.itemname || row['Item Name'] || '',
+          productservice: row.productservice || row['Product/Service'] || 'Product',
+          buysellboth: row.buysellboth || row['Buy/Sell/Both'] || 'Both',
+          unitofmeasurement: row.unitofmeasurement || row['Unit'] || 'pcs',
+          category_id: '00000000-0000-0000-0000-000000000001', // Default category
+          defaultprice: parseFloat(row.defaultprice || row['Price'] || 0),
+          currentstock: parseInt(row.currentstock || row['Stock'] || 0),
+          reorder_level: parseInt(row.reorder_level || row['Reorder Level'] || 10),
+          minimumstocklevel: parseInt(row.minimumstocklevel || row['Min Stock'] || 5),
           is_active: true,
           expiry_tracking: false,
         };
-        await insertItemMutation.mutateAsync(newItem as any);
+
+        await insertItemMutation.mutateAsync(itemData);
       }
-      message.success(`${previewData.length} items uploaded successfully`);
-      setPreviewData([]);
+      
+      message.success(`Successfully uploaded ${fileData.length} items`);
+      setFileData([]);
       onSuccess();
     } catch (error) {
       console.error('Bulk upload error:', error);
-      message.error('Failed to upload some items');
+      message.error('Failed to upload items');
     } finally {
       setUploading(false);
     }
   };
-  
-  const handleCancel = () => {
-      setPreviewData([]);
-      onCancel();
-  }
 
-  const bulkUploadColumns = [
+  const columns = [
     { title: 'Item Name', dataIndex: 'itemname', key: 'itemname' },
-    { title: 'Category', dataIndex: 'itemcategory', key: 'itemcategory' },
-    { title: 'Type', dataIndex: 'productservice', key: 'productservice' },
+    { title: 'Product/Service', dataIndex: 'productservice', key: 'productservice' },
     { title: 'Unit', dataIndex: 'unitofmeasurement', key: 'unitofmeasurement' },
     { title: 'Price', dataIndex: 'defaultprice', key: 'defaultprice' },
     { title: 'Stock', dataIndex: 'currentstock', key: 'currentstock' },
@@ -90,60 +86,58 @@ const BulkUploadModal = ({ onSuccess, onCancel, open }) => {
 
   return (
     <Modal
-      title="Bulk Upload Items from Excel"
+      title="Bulk Upload Items"
       open={open}
-      onCancel={handleCancel}
+      onCancel={onCancel}
       width={800}
       footer={[
-        <Button key="cancel" onClick={handleCancel}>
+        <Button key="cancel" onClick={onCancel}>
           Cancel
         </Button>,
-        <Button
-          key="upload"
-          type="primary"
+        <Button 
+          key="upload" 
+          type="primary" 
+          onClick={handleBulkUpload}
           loading={uploading}
-          onClick={handleBulkInsert}
-          disabled={previewData.length === 0}
+          disabled={fileData.length === 0}
         >
-          Upload {previewData.length > 0 ? `${previewData.length} Items` : 'Items'}
+          Upload Items
         </Button>,
       ]}
     >
-      <div className="space-y-4">
-        <div>
-          <p className="mb-2">Upload Excel file with the following columns:</p>
-          <p className="text-sm text-gray-600 mb-4">
-            Item Name, Category, Type, Buy/Sell, Unit, Price, HSN Code, Current Stock, Reorder Level, Minimum Stock
-          </p>
-        </div>
-        
+      <div style={{ marginBottom: 16 }}>
         <Dragger
-          beforeUpload={handleExcelUpload}
-          accept=".xlsx,.xls"
+          beforeUpload={handleFileUpload}
           showUploadList={false}
+          accept=".xlsx,.xls,.csv"
         >
           <p className="ant-upload-drag-icon">
             <InboxOutlined />
           </p>
-          <p className="ant-upload-text">Click or drag Excel file to this area to upload</p>
+          <p className="ant-upload-text">Click or drag Excel file to upload</p>
           <p className="ant-upload-hint">
-            Support for .xlsx and .xls files only
+            Support for Excel files (.xlsx, .xls) with columns: itemname, productservice, unitofmeasurement, defaultprice, currentstock
           </p>
         </Dragger>
-
-        {previewData.length > 0 && (
-          <div>
-            <h4>Preview ({previewData.length} items):</h4>
-            <Table
-              columns={bulkUploadColumns}
-              dataSource={previewData}
-              pagination={{ pageSize: 5 }}
-              size="small"
-              scroll={{ x: true }}
-            />
-          </div>
-        )}
       </div>
+
+      {fileData.length > 0 && (
+        <div>
+          <h4>Preview ({fileData.length} items)</h4>
+          <Table
+            dataSource={fileData.slice(0, 5)}
+            columns={columns}
+            pagination={false}
+            size="small"
+            rowKey={(record, index) => index}
+          />
+          {fileData.length > 5 && (
+            <p style={{ textAlign: 'center', marginTop: 8 }}>
+              ... and {fileData.length - 5} more items
+            </p>
+          )}
+        </div>
+      )}
     </Modal>
   );
 };

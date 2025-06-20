@@ -288,6 +288,7 @@ export type Database = {
           expiry_tracking: boolean | null
           hsncode: string | null
           id: string
+          images: Json | null
           is_active: boolean | null
           itemid: string
           itemname: string
@@ -311,6 +312,7 @@ export type Database = {
           expiry_tracking?: boolean | null
           hsncode?: string | null
           id?: string
+          images?: Json | null
           is_active?: boolean | null
           itemid: string
           itemname: string
@@ -334,6 +336,7 @@ export type Database = {
           expiry_tracking?: boolean | null
           hsncode?: string | null
           id?: string
+          images?: Json | null
           is_active?: boolean | null
           itemid?: string
           itemname?: string
