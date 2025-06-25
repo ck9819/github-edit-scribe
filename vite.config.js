@@ -1,45 +1,22 @@
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+import { componentTagger } from "lovable-tagger";
 
-import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react';
-import path from 'path';
-
-// Using dynamic import for ESM modules
-export default defineConfig(async ({ mode }) => {
-  // Conditionally import componentTagger only in development mode
-  let componentTagger;
-  if (mode === 'development') {
-    try {
-      const lovableTagger = await import('lovable-tagger');
-      componentTagger = lovableTagger.componentTagger;
-    } catch (error) {
-      console.warn('Warning: Could not import lovable-tagger, proceeding without it');
-    }
-  }
-
-  return {
-    plugins: [
-      react({
-        // Use the classic JSX runtime to avoid issues with react/jsx-runtime resolution.
-        jsxRuntime: 'classic',
-      }),
-      mode === 'development' && componentTagger && componentTagger(),
-    ].filter(Boolean),
-    server: {
-      host: "::",
-      open: true,
-      port: 8080,
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => ({
+  server: {
+    host: "::",
+    port: 8080,
+  },
+  plugins: [
+    react(),
+    mode === 'development' &&
+    componentTagger(),
+  ].filter(Boolean),
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
     },
-    resolve: {
-      alias: {
-        '@': path.resolve(__dirname, './src'),
-      },
-    },
-    build: {
-      outDir: 'dist',
-      sourcemap: true,
-    },
-    optimizeDeps: {
-      include: ['react', 'react-dom'],
-    },
-  };
-});
+  },
+}));
